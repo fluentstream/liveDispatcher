@@ -1,0 +1,40 @@
+<html>
+
+	<head>
+		<script src="./lib/socket.io.js"></script>
+		<script src="./config/config.js"></script>
+		<script src="./liveDispatcher.js"></script>
+		<script src="./callDispatcher.js"></script>
+
+		<script>
+
+			function init(event){
+				console.log("Got Init Event: " , event);
+			}
+
+			function events(event){
+				console.log("Got Regular Event: ", event);
+			}
+
+			var options = {
+				tenant:"FluentStream",
+				room:"FluentStream",
+				extension:"6225",
+				config:config,
+				initHandler:init,
+				eventHandler:events
+			};
+
+
+			var dis = new CallDispatcher(options);
+			
+			dis.run();
+		</script>
+
+	</head>
+
+	<body>
+
+		<p>Testing liveDispatcher</p>
+	</body>
+</html>

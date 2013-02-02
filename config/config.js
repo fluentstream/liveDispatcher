@@ -1,0 +1,21 @@
+var config = {
+	"socket":{
+		"url":"my.fluentcloud.com/",
+		"socket":3000,
+		"secure":true
+	},
+	"authentication":{
+		"url":"https://my.fluentcloud.com/api/v1/core/authenticate",
+		"httpType":"GET"
+	},
+	"ajax":{
+		"apiNamespace":{
+			"core":{
+				"url":"https://my.fluentcloud.com/api/v1/core/"
+			},
+			"call":{
+				"url":"https://my.fluentcloud.com/api/v1/call/"
+			}
+		}
+	}
+};
