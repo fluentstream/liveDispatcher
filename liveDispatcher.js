@@ -31,8 +31,8 @@ for(var key in options){
  LiveDispatcher.prototype.run = function(){
 
  	this.connect();
- 	this.getState();
  	this.listen();
+ 	this.subscribe();
  }
 
 /**
@@ -85,10 +85,17 @@ LiveDispatcher.prototype.connect = function(){
  	this.connection.emit(this.initEvent , this.room , this.initHandler);
  }
 
+ LiveDispatcher.prototype.subscribe = function(){
+
+ 	this.connection.emit("subscribe",this.room,this.initHandler);
+ }
+
 /**
 * This is the function that listens to the events and dispatches them out
 */
 LiveDispatcher.prototype.listen = function(){
 
-	this.connection.on(this.room,this.eventHandler);
+	this.connection.on('ring',this.eventHandler);
+	this.connection.on('connect',this.eventHandler);
+	this.connection.on('hangup',this.eventHandler);
 }
