@@ -30,9 +30,9 @@
 				extension:"",
 				config:config,
 				initHandler:init,
-				this.ringHandler = null;
-				this.connectHandler = null;
-				this.hangUpHandler = null;
+				ringHandler: ringHandler,
+				connectHandler: connectHandler,
+				hangUpHandler: hangUpHandler
 			};
 
 			var dispatcher = new CallDispatcher(options);

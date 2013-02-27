@@ -9,7 +9,6 @@ function LiveDispatcher(options){
     this.agentID = null;
     this.room = null;
     this.connection = null;
-    this.namespace = null;
     this.initHandler = null;
     this.socket = {};
     this.socket.url = null;
