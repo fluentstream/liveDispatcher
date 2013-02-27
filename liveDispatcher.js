@@ -85,6 +85,9 @@ LiveDispatcher.prototype.connect = function(){
  	this.connection.emit(this.initEvent , this.room , this.initHandler);
  }
 
+/**
+ * This is going to subscribe the the room we need to listen to.
+ */
  LiveDispatcher.prototype.subscribe = function(){
 
  	this.connection.emit("subscribe",this.room,this.initHandler);
