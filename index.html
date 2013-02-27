@@ -1,10 +1,9 @@
 <html>
-
 	<head>
-		<script src="./lib/socket.io.js"></script>
-		<script src="./config/config.js"></script>
-		<script src="./liveDispatcher.js"></script>
-		<script src="./callDispatcher.js"></script>
+		<script src="lib/socket.io.js"></script>
+		<script src="config/config.js"></script>
+		<script src="liveDispatcher.js"></script>
+		<script src="callDispatcher.js"></script>
 
 		<script>
 
@@ -15,26 +14,35 @@
 			function events(event){
 				console.log("Got Regular Event: ", event);
 			}
+			function ringHandler(event){
+				console.log("Got ringing event: ", event)
+			}
+			function connectHandler(event){
+				console.log("Got connect event: ", event)
+			}
+			function hangUpHandler(event){
+				console.log("Got hangup event: ", event)
+			}
 
 			var options = {
-				tenant:"FluentStream",
-				room:"FluentStream",
-				extension:"6225",
+				tenant:"",
+				room:"",
+				extension:"",
 				config:config,
 				initHandler:init,
-				eventHandler:events
+				this.ringHandler = null;
+				this.connectHandler = null;
+				this.hangUpHandler = null;
 			};
 
-
-			var dis = new CallDispatcher(options);
+			var dispatcher = new CallDispatcher(options);
 			
-			dis.run();
+			dispatcher.run();
 		</script>
-
 	</head>
 
 	<body>
 
-		<p>Testing liveDispatcher</p>
+		<p>Testing Dispatcher</p>
 	</body>
 </html>

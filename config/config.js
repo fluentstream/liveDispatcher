@@ -1,6 +1,6 @@
 var config = {
 	"socket":{
-		"url":"my.fluentcloud.com/",
+		"url":"my.fluentcloud.com",
 		"socket":3000,
 		"secure":true
 	},
