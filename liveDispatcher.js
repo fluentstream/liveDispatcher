@@ -6,14 +6,11 @@ function LiveDispatcher(options){
     /*Make instances of all common variables*/
     this.tenant = null;
     this.extension = null;
-    this.agentID = null;
     this.room = null;
+    this.eventScope = null;
     this.connection = null;
     this.initHandler = null;
-    this.socket = {};
-    this.socket.url = null;
-    this.socket.socket = null;
-    this.socket.secure = null;
+    this.apikey = null;
 
     /*Initialize the object with the passed in options*/
     for(var key in options){
@@ -53,10 +50,23 @@ LiveDispatcher.prototype.connect = function(){
     if(!this.config.socket)
         throw "Could not find socket configuration.";
 
+    var that = this;
+
     /*Now lets actually connect to the socket*/
     try{
-        connection = io.connect(this.config.socket.url + this.namespace , 
-            {port:this.config.socket.socket,secure:this.config.socket.secure});
+
+        /*Lets see if we are connecting with an api key*/
+        if(this.apikey != null){
+            that.connection = io.connect(this.config.socket.url + this.namespace , 
+                {port:this.config.socket.socket,secure:this.config.socket.secure,
+                    query:"apikey=" + this.apikey});
+        }
+        else{
+
+            /*Lets create the connection here*/
+            that.connection = io.connect(this.config.socket.url + this.namespace , 
+                {port:this.config.socket.socket,secure:this.config.socket.secure});   
+        }
 
     }
     /*If unable to connect to the socket throw an error*/
@@ -64,12 +74,10 @@ LiveDispatcher.prototype.connect = function(){
         throw "Could not connect to server please check the configuration";
     }
 
-    connection.socket.on('error',function(reason){
-        throw "Could not connect to the server: " + reason;
-    });
-        
-    /*Assign the connection to the property*/
-    this.connection = connection;
+    /*Lets see if we have an error on this connection type*/
+    that.connection.socket.on("error" , function(error){
+        throw "Could not connect to the server";
+     });
 }
 
 /**
@@ -88,5 +96,36 @@ LiveDispatcher.prototype.getState = function(){
  */
 LiveDispatcher.prototype.subscribe = function(){
 
-    this.connection.emit("subscribe",this.room,this.initHandler);
+    var subscribeRoom = null;
+
+    /*Lets start by ensuring we have a tenant name and not an empty string*/
+    if(this.tenant.length <= 1)
+        throw "Please include a valid tenant name";
+
+    /*Lets figure out the room we need to subscribe to*/
+    if(this.room != null){
+        /*This means the room was passed in the options so lets make sure it includes tenant*/
+        if(this.room.indexOf(this.tenant) == -1)
+            throw "Invalid room declaration. The tenant name must be in the room";
+
+        subscribeRoom = this.room;
+    }
+    else{
+        /*This means the room was not passed into the options so lets build it*/
+        if(this.eventScope == "tenant")
+            subscribeRoom = this.tenant;
+        else if(this.eventScope == "extension"){
+            /*This means the user only wants to get their events so lets make it so*/
+            if(this.extension.length <= 1)
+                throw "Please include a valid extension to get extension events";
+
+            subscribeRoom = this.tenant + "/" + this.extension;
+        }
+        else{
+            /*This is an unknown event scope so lets let the user know*/
+            throw "Please set the eventScope variable to either 'tenant' or 'extension'";
+        }
+    }
+
+    this.connection.emit("subscribe",subscribeRoom,this.initHandler);
 }

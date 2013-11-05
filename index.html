@@ -24,15 +24,33 @@
 				console.log("Got hangup event: ", event)
 			}
 
+			/**
+			 * Here is an explaination of the possible options
+			 * [tenant]: This is the company name for each different account.  In our system
+			 *	Each franchise is a different "tenant name" for example HomewatchDenver, 
+			 *	HomewatchAl.  This will have to be set to the specific site.
+			 * [eventScope]: This will determine if the user is going to get all tenant events
+			 *	or just their own. Set this to "tenant" for all "extension" for individual
+			 * [config]: This is the configuration from config.js, should not change in most cases
+			 * [initHandler]: This is the function to handle all "initial events", many times when
+			 * 	you "start" the program there will be people on the phone or events happening,
+			 *	this function is how you will handle initilization of those events
+			 * [ringHandler]: When a phone starts ringing this is the event that will be fired
+			 * [connectHandler]: When a user "answers" the phone this is the event that is fired
+			 * [hangUpHandler]: When a user hangs up the phone this is the event that is fired
+			 * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
+			 *	you need an api key please conact support to get one issued for the tenant.
+			 */
 			var options = {
-				tenant:"",
-				room:"",
-				extension:"",
+				tenant:"HomewatchDenver",
+				eventScope:"extension",
+				extension:"1000",
 				config:config,
 				initHandler:init,
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
-				hangUpHandler: hangUpHandler
+				hangUpHandler: hangUpHandler,
+				apikey: ""
 			};
 
 			var dispatcher = new CallDispatcher(options);
