@@ -22,6 +22,6 @@ CallDispatcher.prototype = new LiveDispatcher();
 CallDispatcher.prototype.listen = function(){
 
 	this.connection.on('ring',this.ringHandler);
-	this.connection.on('connect',this.connectHandler);
+	this.connection.on('bridge',this.connectHandler);
 	this.connection.on('hangup',this.hangUpHandler);
 };
