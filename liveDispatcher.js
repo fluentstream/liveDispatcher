@@ -11,6 +11,9 @@ function LiveDispatcher(options){
     this.connection = null;
     this.initHandler = null;
     this.apikey = null;
+    this.authenticationAttempts = 0;
+    this.authenticationMaxAttempts = 0;
+    this.authenticationScheme = null;
 
     /*Initialize the object with the passed in options*/
     for(var key in options){
@@ -27,6 +30,7 @@ function LiveDispatcher(options){
  */
 LiveDispatcher.prototype.run = function(){
 
+    this.authenticationMaxAttempts = this.config.authentication.maxAttempts;
     this.connect();
     this.listen();
     this.subscribe();
@@ -41,8 +45,6 @@ LiveDispatcher.prototype.connect = function(){
     if(!io)
         throw "Socket IO is not property installed.  Please include Socket IO";
 
-    var connection = null;
-
     /*Now lets make sure we have a config object and that socket information is set.*/
     if(!this.config)
         throw "Could not find configuration settings.";
@@ -55,17 +57,25 @@ LiveDispatcher.prototype.connect = function(){
     /*Now lets actually connect to the socket*/
     try{
 
+        var connectURL = this.config.socket.url + ":" + this.config.socket.socket + this.namespace;
+
         /*Lets see if we are connecting with an api key*/
         if(this.apikey != null){
-            that.connection = io.connect(this.config.socket.url + this.namespace , 
-                {port:this.config.socket.socket,secure:this.config.socket.secure,
-                    query:"apikey=" + this.apikey});
+
+            that.authenticationScheme = "api";
+
+            that.connection = io.connect( connectURL , 
+                {secure:this.config.socket.secure,
+                    query:"apikey=" + this.apikey , transport: this.config.socket.transport});
         }
         else{
 
+            that.authenticationScheme = "session";
+
             /*Lets create the connection here*/
-            that.connection = io.connect(this.config.socket.url + this.namespace , 
-                {port:this.config.socket.socket,secure:this.config.socket.secure});   
+            that.connection = io.connect(connectURL , 
+                {secure:this.config.socket.secure , transport:this.config.socket.transport , 
+                    'max reconnection attempts' : 3});
         }
 
     }
@@ -75,9 +85,18 @@ LiveDispatcher.prototype.connect = function(){
     }
 
     /*Lets see if we have an error on this connection type*/
-    that.connection.socket.on("error" , function(error){
-        throw "Could not connect to the server";
-     });
+    that.connection.on("error" , function(error){
+  
+        if(that.authenticationScheme == "session" && 
+            that.authenticationAttempts < that.authenticationMaxAttempts){
+
+            that.connection.remove();
+
+        } else {
+
+            throw "Could not connect to the server";
+        }
+    });
 }
 
 /**
@@ -129,3 +148,12 @@ LiveDispatcher.prototype.subscribe = function(){
 
     this.connection.emit("subscribe",subscribeRoom,this.initHandler);
 }
+
+/**
+ * This will attempt to authenticate via the api
+ */
+ LiveDispatcher.prototype.authenticate = function(){
+
+
+ }
+

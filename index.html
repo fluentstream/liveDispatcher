@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<script src="lib/socket.io.js"></script>
+		<!-- // <script src="lib/socket.io.js"></script> -->
+		<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
 		<script src="config/config.js"></script>
 		<script src="liveDispatcher.js"></script>
 		<script src="callDispatcher.js"></script>
@@ -42,15 +43,15 @@
 			 *	you need an api key please conact support to get one issued for the tenant.
 			 */
 			var options = {
-				tenant:"MyTenantName",
-				eventScope:"extension",
-				extension:"1000",
+				tenant:"",
+				eventScope:"",
+				extension:"",
 				config:config,
 				initHandler:init,
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
-				apikey: ""
+				apikey:''
 			};
 
 			var dispatcher = new CallDispatcher(options);

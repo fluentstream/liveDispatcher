@@ -1,12 +1,14 @@
 var config = {
 	"socket":{
-		"url":"my.fluentcloud.com",
+		"url":"https://my.fluentcloud.com",
 		"socket":443,
-		"secure":true
+		"secure":true,
+		"transport":"websocket"
 	},
 	"authentication":{
 		"url":"https://my.fluentcloud.com/api/v1/core/authenticate",
-		"httpType":"GET"
+		"httpType":"GET",
+		"maxAttempts":10
 	},
 	"ajax":{
 		"apiNamespace":{
