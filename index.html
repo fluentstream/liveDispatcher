@@ -1,10 +1,12 @@
 <html>
 	<head>
 		<!-- // <script src="lib/socket.io.js"></script> -->
-		<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 		<script src="config/config.js"></script>
 		<script src="liveDispatcher.js"></script>
 		<script src="callDispatcher.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+			</script>
 
 		<script>
 
@@ -24,6 +26,19 @@
 			function hangUpHandler(event){
 				console.log("Got hangup event: ", event)
 			}
+			function handleAgentRinging(event) {
+				console.log("Got agent ringing event: ", event)
+			}
+			function customerCreationErrorHandler(event) {
+				console.log("Got customer creation error event: ", event)
+			}
+			function callCompleteHandler(event) {
+				console.log("Got call complete event: ", event)
+			}
+			function agentConnectHandler(event) {
+				console.log("Got agent connect event: ", event)
+			}
+
 
 			/**
 			 * Here is an explaination of the possible options
@@ -43,20 +58,32 @@
 			 *	you need an api key please conact support to get one issued for the tenant.
 			 */
 			var options = {
-				tenant:"",
-				eventScope:"",
-				extension:"",
+				tenant:"Yahweh",
+				eventScope:"tenant",
+				extension:"814",
 				config:config,
 				initHandler:init,
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
-				apikey:''
+				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
+				username:jkatzyw,
+				password:julian12341,
+				room:"Yahweh",
+				zendeskUsername:"testZDName",
+				zendeskAuth:"testZDAuth",
+			    zendeskSubdomain:"testZDSubdomain",
+		        agentRingHandler:handleAgentRinging, 
+		        customerCreationErrorHandler:customerCreationErrorHandler, 
+		        callCompleteHandler:callCompleteHandler, 
+		        agentConnectHandler:agentConnectHandler
 			};
 
-			var dispatcher = new CallDispatcher(options);
-			
+			// var dispatcher = new CallDispatcher(options);
+			var dispatcher = new ZendeskDispatcher(options);
+	
 			dispatcher.run();
+
 		</script>
 	</head>
 

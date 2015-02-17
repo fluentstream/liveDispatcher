@@ -21,6 +21,8 @@ function LiveDispatcher(options){
             this[key] = options[key];
         }   
     }
+
+
 };
 
 /**
@@ -59,30 +61,70 @@ LiveDispatcher.prototype.connect = function(){
 
         var connectURL = this.config.socket.url + ":" + this.config.socket.socket + this.namespace;
 
+        /*Build the connect options here*/
+        var options = {};
+        options.secure = this.config.socket.secure;
+        options.reconnectionAttempts = this.config.socket.connectAttempts;
+        options.reconnection = true;
+        options.transport = this.config.socket.transport;
+        options.reconnectionDelay = this.config.socket.connectDelay;
+        options.rememberTransport = false;
+        // options.timeout = 50;
+        // options.forceNew = true;
+
         /*Lets see if we are connecting with an api key*/
         if(this.apikey != null){
 
+            options.query = "apikey=" + this.apikey;
             that.authenticationScheme = "api";
-
-            that.connection = io.connect( connectURL , 
-                {secure:this.config.socket.secure,
-                    query:"apikey=" + this.apikey , transport: this.config.socket.transport});
         }
-        else{
-
+        else
             that.authenticationScheme = "session";
 
-            /*Lets create the connection here*/
-            that.connection = io.connect(connectURL , 
-                {secure:this.config.socket.secure , transport:this.config.socket.transport , 
-                    'max reconnection attempts' : 3});
-        }
+        /*Lets create the connection here*/
+        this.connection = io.connect(connectURL , options);
 
     }
     /*If unable to connect to the socket throw an error*/
     catch(error){
         throw "Could not connect to server please check the configuration";
     }
+
+    /*Due to the auth on the server the connection may not be ready on connect, so wait here*/
+    this.connection.on("connectionReady" , this.connHandler);
+    // this.connection.on("reconnect" , this.registerAgent);
+    this.connection.on("ping" , this.pong);
+    this.connection.on("disconnect" , function(){console.log("got D/c event")});
+    // this.keepAliveHandle = setTimeout(this.reconnection , this.keepAliveThreshold);
+
+    this.connection.on("connectionReady" , function() {
+        
+    });
+
+    this.connection.on("connect", function() {
+        console.log("Connect - TEST");
+    });
+
+    this.connection.on("reconnect", function() {
+        console.log("Reconnect - TEST");
+    });
+
+    this.connection.on("reconnecting", function(myNumber) {
+        console.log("Reconnecting - TEST.  Try #", myNumber);
+    });
+
+    this.connection.on("reconnect_attempt", function(myNumber) {
+        console.log("Reconnect Attempt - TEST. Try #", myNumber);
+    });
+
+    this.connection.on("reconnect_error", function(myNumber) {
+        console.log("Reconnect Error - TEST. Try #", myNumber);
+    });
+
+    this.connection.on("reconnect_failed", function() {
+        console.log("Reconnect Failed - TEST");
+    });
+
 
     /*Lets see if we have an error on this connection type*/
     that.connection.on("error" , function(error){
@@ -97,6 +139,30 @@ LiveDispatcher.prototype.connect = function(){
             throw "Could not connect to the server";
         }
     });
+}
+
+LiveDispatcher.prototype.connHandler = function(){
+
+    console.log("Connection Ready - TEST");
+}
+
+ZendeskDispatcher.prototype.emit = function(event , data){
+
+    this.connection.emit(event, data);
+}
+
+ZendeskDispatcher.prototype.pong = function(data){
+
+    this.keepAliveReconnectAttempts = 0;
+
+    /*Lets remove the listener here*/
+    if(this.keepAliveHandle)
+        clearTimeout(this.keepAliveHandle);
+
+    console.log("Got ping event with data: " , data);
+    this.emit("pong");
+
+    // this.keepAliveHandle = setTimeout(this.reconnection , this.keepAliveThreshold);
 }
 
 /**
@@ -152,8 +218,71 @@ LiveDispatcher.prototype.subscribe = function(){
 /**
  * This will attempt to authenticate via the api
  */
- LiveDispatcher.prototype.authenticate = function(){
+ LiveDispatcher.prototype.authenticate = function() {
 
+    /*Lets see what the scheme is first, dont auth if its api style*/
+    if(this.authenticationScheme == "api")
+        throw "Cannot authenticate with API key";
 
- }
+    /*Now that we can authenticate lets make sure we have the data we need to auth*/
+    if(this.username.length <= 0)
+        throw "Must include username to authenticate";
 
+    if(this.password.length <= 0)
+        throw "Must include password to authenticate";
+
+    /*Now lets make sure we have a config object and that socket information is set.*/
+    if(!this.config)
+        throw "Could not find configuration settings.";
+
+    if(!this.config.authentication)
+        throw "Could not find authentication configuration.";
+
+    /*Now lets build the authenticate options*/
+    var options = {username:this.username , passhash:this.password};
+    var url = this.config.authentication.url + "?username=" + this.username + "&passhash=" + this.password
+    var that = this;
+    var r = new XMLHttpRequest();
+
+    r.open(this.config.authentication.httpType , url);
+
+    r.onreadystatechange = function(){
+
+        if(r.readyState != 4 || r.status != 200){}
+        else{
+
+            console.log("log in succeded");
+            that.run();
+        }
+    }
+
+    r.send("username="+this.username+"&passhash="+this.password);
+}
+
+/**
+ * This function will remove all of the listeners so they can be set up again
+ */
+LiveDispatcher.prototype.unsubscribe = function(){
+
+    this.emit("unsubscribe" , this.room);
+}
+
+/**
+ * This function will pretty much refresh the page....
+ */
+LiveDispatcher.prototype.reconnection = function(){
+console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    this.keepAliveReconnectAttempts++;
+    
+    if(this.keepAliveReconnectAttempts == this.keepAliveMaxAttempts){
+
+        console.log("**********************************************************************");
+    }
+    else{
+
+        this.connection.io.disconnect();
+        this.run();
+        // this.connection.io.connect();
+        // this.connection.reconnect();
+    }
+}
