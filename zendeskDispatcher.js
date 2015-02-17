@@ -18,8 +18,10 @@ function ZendeskDispatcher(options){
     this.zendeskUsername = null;
     this.zendeskAuth = null;
     this.zendeskSubdomain = null;
+    this.fluentstreamIdentifier = null; //This is either the extension number or the agent id
+    this.namespace = "/zendesk";
 
-    LiveDispatcher.call( this , options);
+    LiveDispatcher.call(this, options);
 
     _.bindAll(this , "registerAgent" , "emit" , "connect" , "run" , "authenticate" , "listen" , 
         "connHandler" , "reconnection" , "pong");
@@ -59,7 +61,7 @@ ZendeskDispatcher.prototype.registerAgent = function(){
 * This is the function that listens to the events and dispatches them out
 */
 ZendeskDispatcher.prototype.listen = function(){
-    
+
     this.connection.on("registrationFailed" , function(error){
         console.log("Got event registrationFailed with data: " , error);
     });

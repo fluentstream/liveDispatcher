@@ -21,8 +21,6 @@ function LiveDispatcher(options){
             this[key] = options[key];
         }   
     }
-
-
 };
 
 /**
@@ -54,8 +52,6 @@ LiveDispatcher.prototype.connect = function(){
     if(!this.config.socket)
         throw "Could not find socket configuration.";
 
-    var that = this;
-
     /*Now lets actually connect to the socket*/
     try{
 
@@ -74,12 +70,11 @@ LiveDispatcher.prototype.connect = function(){
 
         /*Lets see if we are connecting with an api key*/
         if(this.apikey != null){
-
             options.query = "apikey=" + this.apikey;
-            that.authenticationScheme = "api";
+            this.authenticationScheme = "api";
         }
         else
-            that.authenticationScheme = "session";
+            this.authenticationScheme = "session";
 
         /*Lets create the connection here*/
         this.connection = io.connect(connectURL , options);
@@ -97,9 +92,7 @@ LiveDispatcher.prototype.connect = function(){
     this.connection.on("disconnect" , function(){console.log("got D/c event")});
     // this.keepAliveHandle = setTimeout(this.reconnection , this.keepAliveThreshold);
 
-    this.connection.on("connectionReady" , function() {
-        
-    });
+    var that = this;
 
     this.connection.on("connect", function() {
         console.log("Connect - TEST");
@@ -125,9 +118,8 @@ LiveDispatcher.prototype.connect = function(){
         console.log("Reconnect Failed - TEST");
     });
 
-
     /*Lets see if we have an error on this connection type*/
-    that.connection.on("error" , function(error){
+    this.connection.on("error" , function(error){
   
         if(that.authenticationScheme == "session" && 
             that.authenticationAttempts < that.authenticationMaxAttempts){
@@ -146,12 +138,12 @@ LiveDispatcher.prototype.connHandler = function(){
     console.log("Connection Ready - TEST");
 }
 
-ZendeskDispatcher.prototype.emit = function(event , data){
+LiveDispatcher.prototype.emit = function(event , data){
 
     this.connection.emit(event, data);
 }
 
-ZendeskDispatcher.prototype.pong = function(data){
+LiveDispatcher.prototype.pong = function(data){
 
     this.keepAliveReconnectAttempts = 0;
 
