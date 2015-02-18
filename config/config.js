@@ -54,7 +54,7 @@ var config = {
 		"socket":3000,
 		"secure":true,
 		"transport":"websocket",
-		"connectAttempts":10,
+		"connectAttempts":2,
 		"connectDelay":5000
 	},
 	"authentication":{

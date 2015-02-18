@@ -14,6 +14,12 @@ function LiveDispatcher(options){
     this.authenticationAttempts = 0;
     this.authenticationMaxAttempts = 0;
     this.authenticationScheme = null;
+    this.connectEventHandler = null;
+    this.reconnectEventHandler = null;
+    this.reconnectingEventHandler = null;
+    this.reconnectAttemptEventHandler = null;
+    this.reconnectErrorEventHandler = null;
+    this.reconnectFailedEventHandler = null;
 
     /*Initialize the object with the passed in options*/
     for(var key in options){
@@ -33,7 +39,6 @@ LiveDispatcher.prototype.run = function(){
     this.authenticationMaxAttempts = this.config.authentication.maxAttempts;
     this.connect();
     this.listen();
-    this.subscribe();
 }
 
 /**
@@ -66,7 +71,7 @@ LiveDispatcher.prototype.connect = function(){
         options.reconnectionDelay = this.config.socket.connectDelay;
         options.rememberTransport = false;
         // options.timeout = 50;
-        // options.forceNew = true;
+        options.forceNew = true;
 
         /*Lets see if we are connecting with an api key*/
         if(this.apikey != null){
@@ -86,37 +91,28 @@ LiveDispatcher.prototype.connect = function(){
     }
 
     /*Due to the auth on the server the connection may not be ready on connect, so wait here*/
-    this.connection.on("connectionReady" , this.connHandler);
     // this.connection.on("reconnect" , this.registerAgent);
     this.connection.on("ping" , this.pong);
-    this.connection.on("disconnect" , function(){console.log("got D/c event")});
+
     // this.keepAliveHandle = setTimeout(this.reconnection , this.keepAliveThreshold);
 
     var that = this;
 
-    this.connection.on("connect", function() {
-        console.log("Connect - TEST");
+    /*We can only subscribe when the connection is ready!*/
+    this.connection.on("connectionReady" , function(event) {
+        that.subscribe();
+        that.connectEventHandler(event);
     });
 
-    this.connection.on("reconnect", function() {
-        console.log("Reconnect - TEST");
-    });
+    this.connection.on("reconnect", this.reconnectEventHandler);
 
-    this.connection.on("reconnecting", function(myNumber) {
-        console.log("Reconnecting - TEST.  Try #", myNumber);
-    });
+    this.connection.on("reconnecting", this.reconnectingEventHandler);
 
-    this.connection.on("reconnect_attempt", function(myNumber) {
-        console.log("Reconnect Attempt - TEST. Try #", myNumber);
-    });
+    this.connection.on("reconnect_attempt", this.reconnectAttemptEventHandler);
 
-    this.connection.on("reconnect_error", function(myNumber) {
-        console.log("Reconnect Error - TEST. Try #", myNumber);
-    });
+    this.connection.on("reconnect_error", this.reconnectErrorEventHandler);
 
-    this.connection.on("reconnect_failed", function() {
-        console.log("Reconnect Failed - TEST");
-    });
+    this.connection.on("reconnect_failed", this.reconnectFailedEventHandler);
 
     /*Lets see if we have an error on this connection type*/
     this.connection.on("error" , function(error){
@@ -131,11 +127,6 @@ LiveDispatcher.prototype.connect = function(){
             throw "Could not connect to the server";
         }
     });
-}
-
-LiveDispatcher.prototype.connHandler = function(){
-
-    console.log("Connection Ready - TEST");
 }
 
 LiveDispatcher.prototype.emit = function(event , data){
@@ -272,9 +263,8 @@ console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }
     else{
 
-        this.connection.io.disconnect();
+        delete this.connection;
         this.run();
-        // this.connection.io.connect();
-        // this.connection.reconnect();
     }
 }
+

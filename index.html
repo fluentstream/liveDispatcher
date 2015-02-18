@@ -11,13 +11,33 @@
 
 		<script>
 
+			/*These functions correspond to Socket Events, and thus belong to the parent*/
 			function init(event){
-				console.log("Got Init Event: " , event);
+				console.log("Got Init Event: " , event)
+			}
+			function events(event){
+				console.log("Got Regular Event: ", event)
+			}
+			function connectEventHandler(event) {
+				console.log("Got socket connect event: ", event)
+			}
+			function reconnectEventHandler(event) {
+				console.log("Got socket reconnect event: ", event)
+			}
+			function reconnectingEventHandler(event) {
+				console.log("Got socket reconnecting event. Attempt number ", event)
+			}
+			function reconnectAttemptEventHandler(event) {
+				console.log("Got socket reconnect attempt event.  Attempt number ", event)
+			}
+			function reconnectErrorEventHandler(event) {
+				console.log("Got socket reconnect error event: ", event)
+			}
+			function reconnectFailedEventHandler(event) {
+				console.log("Got socket reconnect failed event")
 			}
 
-			function events(event){
-				console.log("Got Regular Event: ", event);
-			}
+			/*These functions are for the Call Dispatcher*/
 			function ringHandler(event){
 				console.log("Got ringing event: ", event)
 			}
@@ -27,6 +47,8 @@
 			function hangUpHandler(event){
 				console.log("Got hangup event: ", event)
 			}
+
+			/*These functions are for the Zendesk Dispatcher*/
 			function handleAgentRinging(event) {
 				console.log("Got agent ringing event: ", event)
 			}
@@ -40,7 +62,7 @@
 				console.log("Got agent connect event: ", event)
 			}
 
-
+			//THIS NEEDS TO BE ADDED TO
 			/**
 			 * Here is an explaination of the possible options
 			 * [tenant]: This is the company name for each different account.  In our system
@@ -64,6 +86,12 @@
 				extension:"814",
 				config:config,
 				initHandler:init,
+				connectEventHandler:connectEventHandler,
+				reconnectEventHandler:reconnectEventHandler,
+				reconnectingEventHandler:reconnectingEventHandler,
+				reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+				reconnectErrorEventHandler:reconnectErrorEventHandler,
+				reconnectFailedEventHandler:reconnectFailedEventHandler,
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
@@ -80,10 +108,17 @@
 		        agentConnectHandler:agentConnectHandler
 			};
 
-			// var dispatcher = new CallDispatcher(options);
-			var dispatcher = new ZendeskDispatcher(options);
+			var dispatcher = new CallDispatcher(options);
+			// var dispatcher = new ZendeskDispatcher(options);
 	
 			dispatcher.run();
+
+			/*Set up button listeners*/
+			document.addEventListener("DOMContentLoaded", function() {
+				document.getElementById("reconnect").onclick = function() {
+					dispatcher.reconnection();
+				};
+			});
 
 		</script>
 	</head>
@@ -91,5 +126,6 @@
 	<body>
 
 		<p>Testing Dispatcher</p>
+		<button type="button" id="reconnect">RECONNECT</button>
 	</body>
 </html>
