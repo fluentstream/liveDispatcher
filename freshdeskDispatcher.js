@@ -6,18 +6,20 @@
  * Optional Definitions:
  *   * [Property] initEvent
  */
-function ZendeskDispatcher(options){
+function FreshdeskDispatcher(options){
 
     this.connectionHandler = null;
     this.agentRingHandler = null;    
     this.username = null;
     this.password = null;
     this.connectionAttempts = 0;
-    this.zendeskUsername = null;
-    this.zendeskAuth = null;
-    this.zendeskSubdomain = null;
+    this.freshdeskUsername = null;
+    this.freshdeskAuth = null;
+    this.freshdeskSubdomain = null;
+    this.keepAliveHandle = null;
+    this.keepAliveThreshold = 10 * 2000;
     this.fluentstreamIdentifier = null; //This is either the extension number or the agent id
-    this.namespace = "/zendesk";
+    this.namespace = "/freshdesk";
 
     LiveDispatcher.call(this, options);
 
@@ -25,30 +27,32 @@ function ZendeskDispatcher(options){
         "connHandler" , "reconnection" , "pong");
 }
 
-ZendeskDispatcher.prototype = new LiveDispatcher();
+FreshdeskDispatcher.prototype = new LiveDispatcher();
 
 /**
- * Zendesk does not subscribe, so we will override the parent function
+ * Freshdesk does not subscribe, so we will override the parent function
  */
-ZendeskDispatcher.prototype.run = function(){
+FreshdeskDispatcher.prototype.run = function(){
 
     this.connect();
     this.listen();
 }
 
-ZendeskDispatcher.prototype.connHandler = function(){
+FreshdeskDispatcher.prototype.connHandler = function(){
 
     /*Handle anything that we need to here for connections*/
     this.registerAgent();
 }
 
-ZendeskDispatcher.prototype.registerAgent = function(){
+FreshdeskDispatcher.prototype.registerAgent = function(){
 
     /*Build the agent data to send for registration*/
     credentials = {};
-    credentials.username = this.zendeskUsername;
-    credentials.auth = this.zendeskAuth;
-    credentials.subdomain = this.zendeskSubdomain;
+    credentials.username = this.freshdeskUsername;
+    credentials.auth = this.freshdeskAuth;
+    credentials.authType = this.freshdeskAuthType;
+    credentials.apiKey = this.freshdeskApiKey;
+    credentials.subdomain = this.freshdeskSubdomain;
     credentials.agentId = this.agentId || this.extension;
     credentials.extension = this.extension;
     credentials.tenant = this.tenant;
@@ -58,7 +62,7 @@ ZendeskDispatcher.prototype.registerAgent = function(){
 /**
 * This is the function that listens to the events and dispatches them out
 */
-ZendeskDispatcher.prototype.listen = function(){
+FreshdeskDispatcher.prototype.listen = function(){
 
     this.connection.on("registrationFailed" , function(error){
         console.log("Got event registrationFailed with data: " , error);
@@ -67,4 +71,5 @@ ZendeskDispatcher.prototype.listen = function(){
     this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
     this.connection.on("callComplete" , this.callCompleteHandler);
     this.connection.on("agentConnect" , this.agentConnectHandler);
-};
+    this.connection.on("updatedProfileTickets" , this.updateTicketsHandler);
+}

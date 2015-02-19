@@ -6,6 +6,7 @@
 		<script src="liveDispatcher.js"></script>
 		<script src="callDispatcher.js"></script>
 		<script src="zendeskDispatcher.js"></script>
+		<script src="freshdeskDispatcher.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
 			</script>
 
@@ -48,7 +49,7 @@
 				console.log("Got hangup event: ", event)
 			}
 
-			/*These functions are for the Zendesk Dispatcher*/
+			/*These functions are for the Zendesk Dispatcher and Freshdesk Dispatcher*/
 			function handleAgentRinging(event) {
 				console.log("Got agent ringing event: ", event)
 			}
@@ -60,6 +61,11 @@
 			}
 			function agentConnectHandler(event) {
 				console.log("Got agent connect event: ", event)
+			}
+
+			/*These functions are for the Freshdesk Dispatcher only*/
+			function updateTicketsHandler(event) {
+				console.log("Got ticket handler update event: ", event);
 			}
 
 			//THIS NEEDS TO BE ADDED TO
@@ -105,11 +111,17 @@
 		        agentRingHandler:handleAgentRinging, 
 		        customerCreationErrorHandler:customerCreationErrorHandler, 
 		        callCompleteHandler:callCompleteHandler, 
-		        agentConnectHandler:agentConnectHandler
+		        agentConnectHandler:agentConnectHandler,
+		        freshdeskUsername:"",
+		        freshdeskAuthType:"api",
+		        freshdeskApiKey:"ZZ4Q1uYKE78iHFYoH8o", //Mel's Production API Key
+		        freshdeskSubdomain:"https://http://fluentstream.freshdesk.com/",
+		        updateTicketsHandler:updateTicketsHandler,
 			};
 
-			var dispatcher = new CallDispatcher(options);
+			// var dispatcher = new CallDispatcher(options);
 			// var dispatcher = new ZendeskDispatcher(options);
+			var dispatcher = new FreshdeskDispatcher(options);
 	
 			dispatcher.run();
 

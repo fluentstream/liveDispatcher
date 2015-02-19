@@ -11,7 +11,7 @@ function CallDispatcher(options){
 	this.initEvent = "getCalls";
 	this.namespace = "/calls";
 
-	LiveDispatcher.call( this , options);
+	LiveDispatcher.call(this, options);
 }
 
 CallDispatcher.prototype = new LiveDispatcher();
