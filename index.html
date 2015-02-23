@@ -7,6 +7,7 @@
 		<script src="callDispatcher.js"></script>
 		<script src="zendeskDispatcher.js"></script>
 		<script src="freshdeskDispatcher.js"></script>
+		<script src="phoneStatusDispatcher.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
 			</script>
 
@@ -68,6 +69,10 @@
 				console.log("Got ticket handler update event: ", event);
 			}
 
+			function peerStatusHandler(event){
+				console.log("Got peer status update event" , event);
+			}
+
 			//THIS NEEDS TO BE ADDED TO
 			/**
 			 * Here is an explaination of the possible options
@@ -101,6 +106,7 @@
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
+				peerStatusHandler:peerStatusHandler,
 				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
 				username:"jkatzyw",
 				password:"julian12341",
@@ -121,7 +127,8 @@
 
 			// var dispatcher = new CallDispatcher(options);
 			// var dispatcher = new ZendeskDispatcher(options);
-			var dispatcher = new FreshdeskDispatcher(options);
+			// var dispatcher = new FreshdeskDispatcher(options);
+			var dispatcher = new PhoneStatusDispatcher(options);
 	
 			dispatcher.run();
 
