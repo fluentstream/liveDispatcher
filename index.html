@@ -73,6 +73,16 @@
 				console.log("Got peer status update event" , event);
 			}
 
+			function getPeersHandler(data){
+
+				console.log("Got a full peer data: " , data);
+			}
+
+			function getCallsHandler(data){
+
+				console.log("Got a full peer data: " , data);
+			}
+
 			//THIS NEEDS TO BE ADDED TO
 			/**
 			 * Here is an explaination of the possible options
@@ -107,6 +117,8 @@
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
 				peerStatusHandler:peerStatusHandler,
+				getPeersHandler:getPeersHandler,
+				getCallsHandler:getCallsHandler,
 				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
 				username:"jkatzyw",
 				password:"julian12341",
@@ -125,10 +137,10 @@
 		        updateTicketsHandler:updateTicketsHandler,
 			};
 
-			// var dispatcher = new CallDispatcher(options);
+			var dispatcher = new CallDispatcher(options);
 			// var dispatcher = new ZendeskDispatcher(options);
 			// var dispatcher = new FreshdeskDispatcher(options);
-			var dispatcher = new PhoneStatusDispatcher(options);
+			// var dispatcher = new PhoneStatusDispatcher(options);
 	
 			dispatcher.run();
 
@@ -136,6 +148,12 @@
 			document.addEventListener("DOMContentLoaded", function() {
 				document.getElementById("reconnect").onclick = function() {
 					dispatcher.reconnection();
+				};
+				document.getElementById("getpeers").onclick = function() {
+					dispatcher.getPeers();
+				};
+				document.getElementById("getcalls").onclick = function() {
+					dispatcher.getCalls();
 				};
 			});
 
@@ -146,5 +164,7 @@
 
 		<p>Testing Dispatcher</p>
 		<button type="button" id="reconnect">RECONNECT</button>
+		<button type="button" id="getpeers">Get Peers</button>
+		<button type="button" id="getcalls">Get Calls</button>
 	</body>
 </html>

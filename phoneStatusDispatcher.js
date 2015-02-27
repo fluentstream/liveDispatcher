@@ -22,4 +22,10 @@ PhoneStatusDispatcher.prototype = new LiveDispatcher();
 PhoneStatusDispatcher.prototype.listen = function(){
 
 	this.connection.on("status" , this.peerStatusHandler);
+	this.connection.on("peers" , this.getPeersHandler);
 };
+
+PhoneStatusDispatcher.prototype.getPeers = function(){
+
+	this.connection.emit("getPeers" , this.tenant);
+}
