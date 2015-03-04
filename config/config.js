@@ -22,7 +22,7 @@
 	}
 };
 */
-/*
+
 var config = {
 	"socket":{
 		"url":"https://beta.fluentcloud.com",
@@ -46,8 +46,8 @@ var config = {
 		}
 	}
 };
-*/
 
+/*
 var config = {
 	"socket":{
 		"url":"http://localhost",
@@ -73,3 +73,4 @@ var config = {
 		}
 	}
 };
+*/
