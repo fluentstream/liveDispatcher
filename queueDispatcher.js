@@ -9,7 +9,7 @@
 function QueueDispatcher(options){
 
 	this.initEvent = "getQueues";
-	this.namespace = "/queues";
+	this.namespace = "/liveQueues";
 
 	LiveDispatcher.call( this , options);
 }
@@ -22,6 +22,7 @@ QueueDispatcher.prototype = new LiveDispatcher();
 QueueDispatcher.prototype.listen = function(){
 
 	this.connection.on('publish' , function(event){console.log("got: ",event)});
+	this.connection.on("join" , this.joinHandler);
 	// this.connection.on('ring',this.ringHandler);
 	// this.connection.on('connect',this.connectHandler);
 	// this.connection.on('hangup',this.hangUpHandler);
