@@ -9,9 +9,9 @@
 function CallDispatcher(options){
 
 	this.initEvent = "getCalls";
-	this.namespace = "/calls";
+	this.namespace = "/phonecalls";
 
-	LiveDispatcher.call( this , options);
+	LiveDispatcher.call(this, options);
 }
 
 CallDispatcher.prototype = new LiveDispatcher();
@@ -21,7 +21,13 @@ CallDispatcher.prototype = new LiveDispatcher();
 */
 CallDispatcher.prototype.listen = function(){
 
-	this.connection.on('ring',this.ringHandler);
-	this.connection.on('connect',this.connectHandler);
-	this.connection.on('hangup',this.hangUpHandler);
+	this.connection.on('ring', this.ringHandler);
+	this.connection.on('bridge', this.connectHandler);
+	this.connection.on('hangup', this.hangUpHandler);
+	this.connection.on("calls" , this.getCallsHandler);
 };
+
+CallDispatcher.prototype.getCalls = function(){
+
+	this.connection.emit("getCalls" , this.tenant);
+}

@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+		<script src="config/config.js"></script>
+		<script src="liveDispatcher.js"></script>
+		<script src="agentDispatcher.js"></script>
+
+		<script>
+
+			function agentCalledHandler(event){
+				console.log("Got event agent called: " , event);
+			}
+			function agentConnectHandler(event){
+				console.log("Got event agent connect : " , event);
+			}
+			function agentCompleteHandler(event){
+				console.log("Got event agent complete: " , event);
+			}
+			function addAgentHandler(event){
+				console.log("Got event : add agent" , event);
+			}
+			function agentRingNoAnswerHandler(event){
+				console.log("Got event : agent ring no answer" , event);
+			}
+			function updateAgentHandler(event){
+				console.log("Got event : update agent" , event);
+			}
+
+			var options = {
+				tenant:"Yahweh",
+				eventScope:"tenant",
+				extension:"600",
+				config:config,
+				// connectEventHandler:connectEventHandler,
+				// reconnectEventHandler:reconnectEventHandler,
+				// reconnectingEventHandler:reconnectingEventHandler,
+				// reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+				// reconnectErrorEventHandler:reconnectErrorEventHandler,
+				// reconnectFailedEventHandler:reconnectFailedEventHandler,
+				// connectHandler: connectHandler,
+				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
+				username:"mnorbyyh",
+				password:"8x8NoNoNo!",
+				room:"Yahweh",
+				agentCalledHandler:agentCalledHandler,
+				agentConnectHandler:agentConnectHandler,
+				agentCompleteHandler:agentCompleteHandler,
+				addAgentHandler:addAgentHandler,
+				agentRingNoAnswerHandler:agentRingNoAnswerHandler,
+				updateAgentHandler:updateAgentHandler
+			};
+
+			var dispatcher = new AgentDispatcher(options);
+			
+			dispatcher.run();
+		</script>
+	</head>
+
+	<body>
+
+		<p>Testing Agent Dispatcher</p>
+	</body>
+</html>

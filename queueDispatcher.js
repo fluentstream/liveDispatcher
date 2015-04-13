@@ -12,18 +12,23 @@ function QueueDispatcher(options){
 	this.namespace = "/liveQueues";
 
 	LiveDispatcher.call( this , options);
+
+	_.bindAll(this , "listen");
 }
 
 QueueDispatcher.prototype = new LiveDispatcher();
 
 /**
-* This is the function that listens to the events and dispatches them out
-*/
+ * This is the function that listens to the events and dispatches them out
+ */
 QueueDispatcher.prototype.listen = function(){
 
 	this.connection.on('publish' , function(event){console.log("got: ",event)});
+	this.connection.on("addQueue" , this.addQueueHandler);
 	this.connection.on("join" , this.joinHandler);
-	// this.connection.on('ring',this.ringHandler);
-	// this.connection.on('connect',this.connectHandler);
-	// this.connection.on('hangup',this.hangUpHandler);
+	this.connection.on("abandon" , this.abandonHandler);
+	this.connection.on("callingAgent" , this.callingAgenthandler);
+	this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
+	this.connection.on("connectAgent" , this.connectAgentHandler);
+	this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
 };

@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<script src="lib/socket.io.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 		<script src="config/config.js"></script>
 		<script src="liveDispatcher.js"></script>
 		<script src="queueDispatcher.js"></script>
@@ -12,19 +13,80 @@
 				console.log("Got Join event: " , event);
 			}
 
+			function addQueueHandler(event){
+
+				console.log("Got add queue event: " , event);
+			}
+
+			function abandonHandler(event){
+
+				console.log("Got abandon event: " , event);
+			}
+
+			function addAgentHandler(event){
+
+				console.log("Got add agent event: " , event);
+			}
+
+			function updateAgentHandler(event){
+
+				console.log("Got update agent event: " , event);
+			}
+
+			function callingAgenthandler(event){
+
+				console.log("Got calling agent event: " , event);
+			}
+
+			function stopCallingAgentHandler(event){
+
+				console.log("Got stop calling agent event: " , event);
+			}
+
+			function connectAgentHandler(event){
+
+				console.log("Got connect agent event: " , event);
+			}
+
+			function disconnectAgentHandler(event){
+
+				console.log("Got disconnect agent event: " , event);
+			}
+
+			function agentRingNoAnswerHandler(event){
+
+				console.log("Got agent ring no answer event: " ,event);
+			}
+
 			var options = {
-				tenant:"",
-				room:"",
-				extension:"",
+				tenant:"Yahweh",
+				eventScope:"tenant",
+				extension:"600",
 				config:config,
-				joinHandler:joinHandler
-				// initHandler:init,
-				// ringHandler: ringHandler,
+				// connectEventHandler:connectEventHandler,
+				// reconnectEventHandler:reconnectEventHandler,
+				// reconnectingEventHandler:reconnectingEventHandler,
+				// reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+				// reconnectErrorEventHandler:reconnectErrorEventHandler,
+				// reconnectFailedEventHandler:reconnectFailedEventHandler,
 				// connectHandler: connectHandler,
-				// hangUpHandler: hangUpHandler
+				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
+				username:"mnorbyyh",
+				password:"8x8NoNoNo!",
+				room:"Yahweh",
+				joinHandler:joinHandler,
+				addQueueHandler:addQueueHandler,
+				abandonHandler:abandonHandler,
+				addAgentHandler:addAgentHandler,
+				updateAgentHandler:updateAgentHandler,
+				callingAgenthandler:callingAgenthandler,
+				stopCallingAgentHandler:stopCallingAgentHandler,
+				connectAgentHandler:connectAgentHandler,
+				disconnectAgentHandler:disconnectAgentHandler,
+				agentRingNoAnswerHandler:agentRingNoAnswerHandler
 			};
 
-			var dispatcher = new CallDispatcher(options);
+			var dispatcher = new QueueDispatcher(options);
 			
 			dispatcher.run();
 		</script>
@@ -32,6 +94,6 @@
 
 	<body>
 
-		<p>Testing Dispatcher</p>
+		<p>Testing Queue Dispatcher</p>
 	</body>
 </html>
