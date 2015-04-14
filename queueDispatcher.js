@@ -31,4 +31,5 @@ QueueDispatcher.prototype.listen = function(){
 	this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
 	this.connection.on("connectAgent" , this.connectAgentHandler);
 	this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
+	this.connection.on("queueData" , this.queueDataHander);
 };

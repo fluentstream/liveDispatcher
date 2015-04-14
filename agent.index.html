@@ -27,6 +27,10 @@
 				console.log("Got event : update agent" , event);
 			}
 
+			function agentDataHandler(event){
+				console.log("Got agent data refresh data event: " , event);
+			}
+
 			var options = {
 				tenant:"Yahweh",
 				eventScope:"tenant",
@@ -48,12 +52,17 @@
 				agentCompleteHandler:agentCompleteHandler,
 				addAgentHandler:addAgentHandler,
 				agentRingNoAnswerHandler:agentRingNoAnswerHandler,
-				updateAgentHandler:updateAgentHandler
+				updateAgentHandler:updateAgentHandler,
+				agentDataHandler:agentDataHandler
 			};
 
 			var dispatcher = new AgentDispatcher(options);
 			
 			dispatcher.run();
+
+			setInterval(function(){
+				dispatcher.getState();
+			},15000);
 		</script>
 	</head>
 

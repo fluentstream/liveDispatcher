@@ -29,5 +29,6 @@ AgentDispatcher.prototype.listen = function(){
 	this.connection.on("addAgent" , this.addAgentHandler);
 	this.connection.on("agentRingNoAnswer" , this.agentRingNoAnswerHandler);
 	this.connection.on("updateAgent" , this.updateAgentHandler);
+	this.connection.on("agentData" , this.agentDataHandler);
 
 };

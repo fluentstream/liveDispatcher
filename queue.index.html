@@ -58,6 +58,16 @@
 				console.log("Got agent ring no answer event: " ,event);
 			}
 
+			function initHandler(data){
+
+				console.log("Got initilization data: " , data);
+			}
+
+			function queueDataHander(data){
+
+				console.log("Got queue data event.: " , data);
+			}
+
 			var options = {
 				tenant:"Yahweh",
 				eventScope:"tenant",
@@ -70,6 +80,7 @@
 				// reconnectErrorEventHandler:reconnectErrorEventHandler,
 				// reconnectFailedEventHandler:reconnectFailedEventHandler,
 				// connectHandler: connectHandler,
+				// initHandler:initHandler,
 				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
 				username:"mnorbyyh",
 				password:"8x8NoNoNo!",
@@ -83,12 +94,17 @@
 				stopCallingAgentHandler:stopCallingAgentHandler,
 				connectAgentHandler:connectAgentHandler,
 				disconnectAgentHandler:disconnectAgentHandler,
-				agentRingNoAnswerHandler:agentRingNoAnswerHandler
+				agentRingNoAnswerHandler:agentRingNoAnswerHandler,
+				queueDataHander:queueDataHander
 			};
 
 			var dispatcher = new QueueDispatcher(options);
 			
 			dispatcher.run();
+
+			setInterval(function(){
+				dispatcher.getState();
+			},15000);
 		</script>
 	</head>
 

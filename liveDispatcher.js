@@ -100,9 +100,17 @@ LiveDispatcher.prototype.connect = function(){
 
     /*We can only subscribe when the connection is ready!*/
     this.connection.on("connectionReady" , function(event) {
+
+        /*Lets subscribe since we are ready*/
         that.subscribe();
+
+        /*Lets call the connectEventHandler to let someone know we are connected*/
         if(_.isFunction(that.connectEventHandler))
             that.connectEventHandler(event);
+
+        /*Now lets call the getState function to get the initial state*/
+        if(_.isFunction(that.getState))
+            that.getState(event);
     });
 
     this.connection.on("reconnect", this.reconnectEventHandler);
@@ -157,7 +165,7 @@ LiveDispatcher.prototype.pong = function(data){
 LiveDispatcher.prototype.getState = function(){
 
     /*Lets emit the event that we need*/
-    this.connection.emit(this.initEvent , this.room , this.initHandler);
+    this.connection.emit(this.initEvent , this.tenant);
 }
 
 /**
