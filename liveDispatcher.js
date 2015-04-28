@@ -113,6 +113,8 @@ LiveDispatcher.prototype.connect = function(){
             that.getState(event);
     });
 
+    this.connection.on("disconnect", this.disconnectEventHandler);
+
     this.connection.on("reconnect", this.reconnectEventHandler);
 
     this.connection.on("reconnecting", this.reconnectingEventHandler);
