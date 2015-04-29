@@ -113,17 +113,23 @@ LiveDispatcher.prototype.connect = function(){
             that.getState(event);
     });
 
-    this.connection.on("disconnect", this.disconnectEventHandler);
+    if(_.isFunction(this.disconnectEventHandler))
+        this.connection.on("disconnect", this.disconnectEventHandler);
 
-    this.connection.on("reconnect", this.reconnectEventHandler);
+    if(_.isFunction(this.reconnectEventHandler))
+        this.connection.on("reconnect", this.reconnectEventHandler);
 
-    this.connection.on("reconnecting", this.reconnectingEventHandler);
+    if(_.isFunction(this.reconnectingEventHandler))
+        this.connection.on("reconnecting", this.reconnectingEventHandler);
 
-    this.connection.on("reconnect_attempt", this.reconnectAttemptEventHandler);
+    if(_.isFunction(this.reconnectAttemptEventHandler))
+        this.connection.on("reconnect_attempt", this.reconnectAttemptEventHandler);
 
-    this.connection.on("reconnect_error", this.reconnectErrorEventHandler);
+    if(_.isFunction(this.reconnectErrorEventHandler))
+        this.connection.on("reconnect_error", this.reconnectErrorEventHandler);
 
-    this.connection.on("reconnect_failed", this.reconnectFailedEventHandler);
+    if(_.isFunction(this.reconnectFailedEventHandler))
+        this.connection.on("reconnect_failed", this.reconnectFailedEventHandler);
 
     /*Lets see if we have an error on this connection type*/
     this.connection.on("error" , function(error){

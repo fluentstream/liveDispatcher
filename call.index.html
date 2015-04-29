@@ -14,12 +14,6 @@
 		<script>
 
 			/*These functions correspond to Socket Events, and thus belong to the parent*/
-			function init(event){
-				console.log("Got Init Event: " , event)
-			}
-			function events(event){
-				console.log("Got Regular Event: ", event)
-			}
 			function connectEventHandler(event) {
 				console.log("Got socket connect event: ", event)
 			}
@@ -50,37 +44,9 @@
 				console.log("Got hangup event: ", event)
 			}
 
-			/*These functions are for the Zendesk Dispatcher and Freshdesk Dispatcher*/
-			function handleAgentRinging(event) {
-				console.log("Got agent ringing event: ", event)
-			}
-			function customerCreationErrorHandler(event) {
-				console.log("Got customer creation error event: ", event)
-			}
-			function callCompleteHandler(event) {
-				console.log("Got call complete event: ", event)
-			}
-			function agentConnectHandler(event) {
-				console.log("Got agent connect event: ", event)
-			}
-
-			/*These functions are for the Freshdesk Dispatcher only*/
-			function updateTicketsHandler(event) {
-				console.log("Got ticket handler update event: ", event);
-			}
-
-			function peerStatusHandler(event){
-				console.log("Got peer status update event" , event);
-			}
-
-			function getPeersHandler(data){
-
-				console.log("Got a full peer data: " , data);
-			}
-
 			function getCallsHandler(data){
 
-				console.log("Got a full peer data: " , data);
+				console.log("Got calls data: " , data);
 			}
 
 			//THIS NEEDS TO BE ADDED TO
@@ -102,11 +68,10 @@
 			 *	you need an api key please conact support to get one issued for the tenant.
 			 */
 			var options = {
-				tenant:"Yahweh",
+				tenant:"",
 				eventScope:"tenant",
-				extension:"814",
+				extension:"",
 				config:config,
-				initHandler:init,
 				connectEventHandler:connectEventHandler,
 				reconnectEventHandler:reconnectEventHandler,
 				reconnectingEventHandler:reconnectingEventHandler,
@@ -116,42 +81,24 @@
 				ringHandler: ringHandler,
 				connectHandler: connectHandler,
 				hangUpHandler: hangUpHandler,
-				peerStatusHandler:peerStatusHandler,
-				getPeersHandler:getPeersHandler,
 				getCallsHandler:getCallsHandler,
-				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
-				username:"jkatzyw",
-				password:"julian12341",
-				room:"Yahweh",
-				zendeskUsername:"testZDName",
-				zendeskAuth:"testZDAuth",
-			    zendeskSubdomain:"testZDSubdomain",
-		        agentRingHandler:handleAgentRinging, 
-		        customerCreationErrorHandler:customerCreationErrorHandler, 
-		        callCompleteHandler:callCompleteHandler, 
-		        agentConnectHandler:agentConnectHandler,
-		        freshdeskUsername:"",
-		        freshdeskAuthType:"api",
-		        freshdeskApiKey:"ZZ4Q1uYKE78iHFYoH8o", //Mel's Production API Key
-		        freshdeskSubdomain:"https://http://fluentstream.freshdesk.com/",
-		        updateTicketsHandler:updateTicketsHandler,
+				apikey:'',
+				username:"",
+				password:"",
+				room:""
 			};
 
 			var dispatcher = new CallDispatcher(options);
-			// var dispatcher = new ZendeskDispatcher(options);
-			// var dispatcher = new FreshdeskDispatcher(options);
-			// var dispatcher = new PhoneStatusDispatcher(options);
 	
 			dispatcher.run();
 
+			/*This can be used to get all of the calls from the server on an interval*/
+			setInterval(function(){
+				dispatcher.getState();
+			},60000);
+
 			/*Set up button listeners*/
 			document.addEventListener("DOMContentLoaded", function() {
-				document.getElementById("reconnect").onclick = function() {
-					dispatcher.reconnection();
-				};
-				document.getElementById("getpeers").onclick = function() {
-					dispatcher.getPeers();
-				};
 				document.getElementById("getcalls").onclick = function() {
 					dispatcher.getCalls();
 				};
@@ -162,9 +109,7 @@
 
 	<body>
 
-		<p>Testing Dispatcher</p>
-		<button type="button" id="reconnect">RECONNECT</button>
-		<button type="button" id="getpeers">Get Peers</button>
+		<p>Testing Call Dispatcher</p>
 		<button type="button" id="getcalls">Get Calls</button>
 	</body>
 </html>
