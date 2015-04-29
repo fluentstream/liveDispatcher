@@ -8,93 +8,94 @@
 
 		<script>
 
-			function joinHandler(event){
+			/*These functions correspond to Socket Events, and thus belong to the parent*/
+			function connectEventHandler(event) {
+				console.log("Got socket connect event: ", event)
+			}
+			function reconnectEventHandler(event) {
+				console.log("Got socket reconnect event: ", event)
+			}
+			function reconnectingEventHandler(event) {
+				console.log("Got socket reconnecting event. Attempt number ", event)
+			}
+			function reconnectAttemptEventHandler(event) {
+				console.log("Got socket reconnect attempt event.  Attempt number ", event)
+			}
+			function reconnectErrorEventHandler(event) {
+				console.log("Got socket reconnect error event: ", event)
+			}
+			function reconnectFailedEventHandler(event) {
+				console.log("Got socket reconnect failed event")
+			}
 
+			/*These are the queue specific events*/
+			function joinHandler(event){
 				console.log("Got Join event: " , event);
 			}
 
-			function addQueueHandler(event){
-
-				console.log("Got add queue event: " , event);
-			}
-
 			function abandonHandler(event){
-
 				console.log("Got abandon event: " , event);
 			}
 
-			function addAgentHandler(event){
-
-				console.log("Got add agent event: " , event);
-			}
-
-			function updateAgentHandler(event){
-
-				console.log("Got update agent event: " , event);
-			}
-
 			function callingAgenthandler(event){
-
 				console.log("Got calling agent event: " , event);
 			}
 
 			function stopCallingAgentHandler(event){
-
 				console.log("Got stop calling agent event: " , event);
 			}
 
 			function connectAgentHandler(event){
-
 				console.log("Got connect agent event: " , event);
 			}
 
 			function disconnectAgentHandler(event){
-
 				console.log("Got disconnect agent event: " , event);
 			}
 
-			function agentRingNoAnswerHandler(event){
-
-				console.log("Got agent ring no answer event: " ,event);
-			}
-
-			function initHandler(data){
-
-				console.log("Got initilization data: " , data);
-			}
-
 			function queueDataHander(data){
-
 				console.log("Got queue data event.: " , data);
 			}
 
+			/**
+			 * Here is an explaination of the possible options
+			 * [tenant]: This is the company name for each different account.  In our system
+			 *	Each franchise is a different "tenant name" this will have to be set to the 
+			 * 	specific site.
+			 * [eventScope]: This will determine if the user is going to get all tenant events
+			 *	or just their own. Set this to "tenant" for all "extension" for individual
+			 * [config]: This is the configuration from config.js, should not change in most cases
+			 * [joinHandler]: This happens when a customer enters the queue. So a new call
+			 * [abandonHandler]: When a customer in the queue hangs up before talking to an agent
+			 * [callingAgentHandler]: This happens when an agents phone starts ringing from a queue call
+			 * [stopCallingAgentHandler]: This happens when an agents phone stops ringing from a queue call
+			 * [connectAgentHandler]: This happens when an agent answers the phone for a queue call
+			 * [disconnectAgentHandler]: This happens when an agent ends a queue call
+			 * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
+			 *	you need an api key please conact support to get one issued for the tenant.
+			 */
+
 			var options = {
-				tenant:"Yahweh",
+				tenant:"",
 				eventScope:"tenant",
-				extension:"600",
+				extension:"",
 				config:config,
-				// connectEventHandler:connectEventHandler,
-				// reconnectEventHandler:reconnectEventHandler,
-				// reconnectingEventHandler:reconnectingEventHandler,
-				// reconnectAttemptEventHandler:reconnectAttemptEventHandler,
-				// reconnectErrorEventHandler:reconnectErrorEventHandler,
-				// reconnectFailedEventHandler:reconnectFailedEventHandler,
-				// connectHandler: connectHandler,
-				// initHandler:initHandler,
-				apikey:'WSokI92B-Fki2-tYop-u7MxmxmNw72i',
-				username:"mnorbyyh",
-				password:"8x8NoNoNo!",
-				room:"Yahweh",
+				connectEventHandler:connectEventHandler,
+				reconnectEventHandler:reconnectEventHandler,
+				reconnectingEventHandler:reconnectingEventHandler,
+				reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+				reconnectErrorEventHandler:reconnectErrorEventHandler,
+				reconnectFailedEventHandler:reconnectFailedEventHandler,
+				apikey:'',
+				username:"",
+				password:"",
+				room:"",
 				joinHandler:joinHandler,
-				addQueueHandler:addQueueHandler,
 				abandonHandler:abandonHandler,
-				addAgentHandler:addAgentHandler,
-				updateAgentHandler:updateAgentHandler,
 				callingAgenthandler:callingAgenthandler,
 				stopCallingAgentHandler:stopCallingAgentHandler,
 				connectAgentHandler:connectAgentHandler,
 				disconnectAgentHandler:disconnectAgentHandler,
-				agentRingNoAnswerHandler:agentRingNoAnswerHandler,
 				queueDataHander:queueDataHander
 			};
 
@@ -104,7 +105,7 @@
 
 			setInterval(function(){
 				dispatcher.getState();
-			},15000);
+			},60000);
 		</script>
 	</head>
 
