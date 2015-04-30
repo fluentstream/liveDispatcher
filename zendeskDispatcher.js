@@ -60,11 +60,14 @@ ZendeskDispatcher.prototype.registerAgent = function(){
 */
 ZendeskDispatcher.prototype.listen = function(){
 
-    this.connection.on("registrationFailed" , function(error){
-        console.log("Got event registrationFailed with data: " , error);
-    });
-    this.connection.on("agentRinging" , this.agentRingHandler);
-    this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
-    this.connection.on("callComplete" , this.callCompleteHandler);
-    this.connection.on("agentConnect" , this.agentConnectHandler);
+    if(_.isFunction(this.registrationFailedHandler))
+        this.connection.on("registrationFailed" , this.registrationFailedHandler);
+    if(_.isFunction(this.agentRingHandler))
+        this.connection.on("agentRinging" , this.agentRingHandler);
+    if(_.isFunction(this.customerCreationErrorHandler))
+        this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
+    if(_.isFunction(this.callCompleteHandler))
+        this.connection.on("callComplete" , this.callCompleteHandler);
+    if(_.isFunction(this.agentConnectHandler))
+        this.connection.on("agentConnect" , this.agentConnectHandler);
 };

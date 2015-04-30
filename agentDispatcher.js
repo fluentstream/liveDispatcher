@@ -23,12 +23,19 @@ AgentDispatcher.prototype = new LiveDispatcher();
  */
 AgentDispatcher.prototype.listen = function(){
 
-	this.connection.on("agentCalled" , this.agentCalledHandler);
-	this.connection.on("agentConnect" , this.agentConnectHandler);
-	this.connection.on("agentComplete" , this.agentCompleteHandler);
-	this.connection.on("addAgent" , this.addAgentHandler);
-	this.connection.on("agentRingNoAnswer" , this.agentRingNoAnswerHandler);
-	this.connection.on("updateAgent" , this.updateAgentHandler);
-	this.connection.on("agentData" , this.agentDataHandler);
+	if(_.isFunction(this.agentCalledHandler))
+		this.connection.on("agentCalled" , this.agentCalledHandler);
+	if(_.isFunction(this.agentConnectHandler))
+		this.connection.on("agentConnect" , this.agentConnectHandler);
+	if(_.isFunction(this.agentCompleteHandler))
+		this.connection.on("agentComplete" , this.agentCompleteHandler);
+	if(_.isFunction(this.addAgentHandler))
+		this.connection.on("addAgent" , this.addAgentHandler);
+	if(_.isFunction(this.agentRingNoAnswerHandler))
+		this.connection.on("agentRingNoAnswer" , this.agentRingNoAnswerHandler);
+	if(_.isFunction(this.updateAgentHandler))
+		this.connection.on("updateAgent" , this.updateAgentHandler);
+	if(_.isFunction(this.agentDataHandler))
+		this.connection.on("agentData" , this.agentDataHandler);
 
 };

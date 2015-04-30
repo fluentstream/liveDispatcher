@@ -24,7 +24,7 @@
 
 var config = {
 	"socket":{
-		"url":"https://beta.fluentcloud.com",
+		"url":"https://your.fluentcloud.com",
 		"socket":443,
 		"secure":true,
 		"transport":"websocket"

@@ -23,13 +23,20 @@ QueueDispatcher.prototype = new LiveDispatcher();
  */
 QueueDispatcher.prototype.listen = function(){
 
-	this.connection.on('publish' , function(event){console.log("got: ",event)});
-	this.connection.on("addQueue" , this.addQueueHandler);
-	this.connection.on("join" , this.joinHandler);
-	this.connection.on("abandon" , this.abandonHandler);
-	this.connection.on("callingAgent" , this.callingAgenthandler);
-	this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
-	this.connection.on("connectAgent" , this.connectAgentHandler);
-	this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
-	this.connection.on("queueData" , this.queueDataHander);
+	if(_.isFunction(this.addQueueHandler))
+		this.connection.on("addQueue" , this.addQueueHandler);
+	if(_.isFunction(this.joinHandler))
+		this.connection.on("join" , this.joinHandler);
+	if(_.isFunction(this.abandonHandler))
+		this.connection.on("abandon" , this.abandonHandler);
+	if(_.isFunction(this.callingAgenthandler))
+		this.connection.on("callingAgent" , this.callingAgenthandler);
+	if(_.isFunction(this.stopCallingAgentHandler))
+		this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
+	if(_.isFunction(this.connectAgentHandler))
+		this.connection.on("connectAgent" , this.connectAgentHandler);
+	if(_.isFunction(this.disconnectAgentHandler))
+		this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
+	if(_.isFunction(queueDataHander))
+		this.connection.on("queueData" , this.queueDataHander);
 };
