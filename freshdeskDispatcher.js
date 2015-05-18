@@ -24,7 +24,7 @@ function FreshdeskDispatcher(options){
     LiveDispatcher.call(this, options);
 
     _.bindAll(this , "registerAgent" , "emit" , "connect" , "run" , "authenticate" , "listen" , 
-        "connHandler" , "reconnection" , "pong");
+        "subscribe" , "reconnection" , "pong");
 }
 
 FreshdeskDispatcher.prototype = new LiveDispatcher();
@@ -38,7 +38,7 @@ FreshdeskDispatcher.prototype.run = function(){
     this.listen();
 }
 
-FreshdeskDispatcher.prototype.connHandler = function(){
+FreshdeskDispatcher.prototype.subscribe = function(){
 
     /*Handle anything that we need to here for connections*/
     this.registerAgent();
@@ -66,8 +66,8 @@ FreshdeskDispatcher.prototype.listen = function(){
 
     if(_.isFunction(this.registrationFailedHandler))
         this.connection.on("registrationFailed" , this.registrationFailedHandler);
-    if(_.isFunction(this.agentRingHandler))
-        this.connection.on("agentRinging" , this.agentRingHandler);
+    if(_.isFunction(this.agentRingingHandler))
+        this.connection.on("agentRinging" , this.agentRingingHandler);
     if(_.isFunction(this.customerCreationErrorHandler))
         this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
     if(_.isFunction(this.callCompleteHandler))

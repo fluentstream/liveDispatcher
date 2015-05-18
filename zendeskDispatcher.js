@@ -22,7 +22,7 @@ function ZendeskDispatcher(options){
     LiveDispatcher.call(this, options);
 
     _.bindAll(this , "registerAgent" , "emit" , "connect" , "run" , "authenticate" , "listen" , 
-        "connHandler" , "reconnection" , "pong");
+        "reconnection" , "pong" , "subscribe");
 }
 
 ZendeskDispatcher.prototype = new LiveDispatcher();
@@ -36,7 +36,10 @@ ZendeskDispatcher.prototype.run = function(){
     this.listen();
 }
 
-ZendeskDispatcher.prototype.connHandler = function(){
+/**
+ * In this case we need to override the subscribe function to register the agent instead
+ */
+ZendeskDispatcher.prototype.subscribe = function(){
 
     /*Handle anything that we need to here for connections*/
     this.registerAgent();
@@ -59,11 +62,11 @@ ZendeskDispatcher.prototype.registerAgent = function(){
 * This is the function that listens to the events and dispatches them out
 */
 ZendeskDispatcher.prototype.listen = function(){
-
+    
     if(_.isFunction(this.registrationFailedHandler))
         this.connection.on("registrationFailed" , this.registrationFailedHandler);
-    if(_.isFunction(this.agentRingHandler))
-        this.connection.on("agentRinging" , this.agentRingHandler);
+    if(_.isFunction(this.agentRingingHandler))
+        this.connection.on("agentRinging" , this.agentRingingHandler);
     if(_.isFunction(this.customerCreationErrorHandler))
         this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
     if(_.isFunction(this.callCompleteHandler))
