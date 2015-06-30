@@ -81,9 +81,9 @@
              * SEE BOTTOM OF FILE FOR FURTHER EXPLANATION OF CALLS
              */
             var options = {
-                tenant:"KatzInc",
-                eventScope:"tenant",
-                extension:"100",
+                tenant:"",
+                eventScope:"",
+                extension:"",
                 config:config,
                 connectEventHandler:connectEventHandler,
                 reconnectEventHandler:reconnectEventHandler,
@@ -99,12 +99,10 @@
                 bridgeDestroyHandler: bridgeDestroyHandler,
                 bridgeCreateHandler: bridgeCreateHandler,
                 callTransferHandler: callTransferHandler,
-                apikey:'NgXvRZP1-9Rc8-93T6-ldxjGHOpQ4x6',
-/*
+                apikey:'',
                 username:"",
                 password:"",
-*/
-                room:"KatzInc"
+                room:""
             };
 
             var dispatcher = new CallDispatcher(options);
