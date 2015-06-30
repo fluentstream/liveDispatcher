@@ -1,114 +1,114 @@
 <html>
-	<head>
-		<!-- // <script src="lib/socket.io.js"></script> -->
-		<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
-		<script src="config/config.js"></script>
-		<script src="liveDispatcher.js"></script>
-		<script src="callDispatcher.js"></script>
-		<script src="zendeskDispatcher.js"></script>
-		<script src="freshdeskDispatcher.js"></script>
-		<script src="phoneStatusDispatcher.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
-			</script>
+    <head>
+        <!-- // <script src="lib/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+        <script src="config/config.js"></script>
+        <script src="liveDispatcher.js"></script>
+        <script src="callDispatcher.js"></script>
+        <script src="zendeskDispatcher.js"></script>
+        <script src="freshdeskDispatcher.js"></script>
+        <script src="phoneStatusDispatcher.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+            </script>
 
-		<script>
+        <script>
 
-			/*These functions correspond to Socket Events, and thus belong to the parent*/
-			function connectEventHandler(event) {
-				console.log("Got socket connect event: ", event)
-			}
-			function reconnectEventHandler(event) {
-				console.log("Got socket reconnect event: ", event)
-			}
-			function reconnectingEventHandler(event) {
-				console.log("Got socket reconnecting event. Attempt number ", event)
-			}
-			function reconnectAttemptEventHandler(event) {
-				console.log("Got socket reconnect attempt event.  Attempt number ", event)
-			}
-			function reconnectErrorEventHandler(event) {
-				console.log("Got socket reconnect error event: ", event)
-			}
-			function reconnectFailedEventHandler(event) {
-				console.log("Got socket reconnect failed event")
-			}
+            /*These functions correspond to Socket Events, and thus belong to the parent*/
+            function connectEventHandler(event) {
+                    console.log("Got socket connect event: ", event)
+            }
+            function reconnectEventHandler(event) {
+                    console.log("Got socket reconnect event: ", event)
+            }
+            function reconnectingEventHandler(event) {
+                    console.log("Got socket reconnecting event. Attempt number ", event)
+            }
+            function reconnectAttemptEventHandler(event) {
+                    console.log("Got socket reconnect attempt event.  Attempt number ", event)
+            }
+            function reconnectErrorEventHandler(event) {
+                    console.log("Got socket reconnect error event: ", event)
+            }
+            function reconnectFailedEventHandler(event) {
+                    console.log("Got socket reconnect failed event")
+            }
 
-			/*These functions are for the Call Dispatcher*/
-			function ringHandler(event){
-				console.log("Got ringing event: ", event)
-			}
-			function connectHandler(event){
-				console.log("Got connect event: ", event)
-			}
-			function hangUpHandler(event){
-				console.log("Got hangup event: ", event)
-			}
+            /*These functions are for the Call Dispatcher*/
+            function ringHandler(event){
+                    console.log("Got ringing event: ", event)
+            }
+            function connectHandler(event){
+                    console.log("Got connect event: ", event)
+            }
+            function hangUpHandler(event){
+                    console.log("Got hangup event: ", event)
+            }
 
-			function getCallsHandler(data){
+            function getCallsHandler(data){
 
-				console.log("Got calls data: " , data);
-			}
+                    console.log("Got calls data: " , data);
+            }
 
-			/**
-			 * Here is an explaination of the possible options
-			 * [tenant]: This is the company name for each different account.  In our system
-			 *	Each franchise is a different "tenant name" this will have to be set to the 
-			 * 	specific site.
-			 * [eventScope]: This will determine if the user is going to get all tenant events
-			 *	or just their own. Set this to "tenant" for all "extension" for individual
-			 * [config]: This is the configuration from config.js, should not change in most cases
-			 * [initHandler]: This is the function to handle all "initial events", many times when
-			 * 	you "start" the program there will be people on the phone or events happening,
-			 *	this function is how you will handle initilization of those events
-			 * [ringHandler]: When a phone starts ringing this is the event that will be fired
-			 * [connectHandler]: When a user "answers" the phone this is the event that is fired
-			 * [hangUpHandler]: When a user hangs up the phone this is the event that is fired
-			 * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
-			 *	you need an api key please conact support to get one issued for the tenant.
-			 */
-			var options = {
-				tenant:"",
-				eventScope:"",
-				extension:"",
-				config:config,
-				connectEventHandler:connectEventHandler,
-				reconnectEventHandler:reconnectEventHandler,
-				reconnectingEventHandler:reconnectingEventHandler,
-				reconnectAttemptEventHandler:reconnectAttemptEventHandler,
-				reconnectErrorEventHandler:reconnectErrorEventHandler,
-				reconnectFailedEventHandler:reconnectFailedEventHandler,
-				ringHandler: ringHandler,
-				connectHandler: connectHandler,
-				hangUpHandler: hangUpHandler,
-				getCallsHandler:getCallsHandler,
-				apikey:'',
-				username:"",
-				password:"",
-				room:""
-			};
+            /**
+             * Here is an explaination of the possible options
+             * [tenant]: This is the company name for each different account.  In our system
+             *	Each franchise is a different "tenant name" this will have to be set to the 
+             * 	specific site.
+             * [eventScope]: This will determine if the user is going to get all tenant events
+             *	or just their own. Set this to "tenant" for all "extension" for individual
+             * [config]: This is the configuration from config.js, should not change in most cases
+             * [initHandler]: This is the function to handle all "initial events", many times when
+             * 	you "start" the program there will be people on the phone or events happening,
+             *	this function is how you will handle initilization of those events
+             * [ringHandler]: When a phone starts ringing this is the event that will be fired
+             * [connectHandler]: When a user "answers" the phone this is the event that is fired
+             * [hangUpHandler]: When a user hangs up the phone this is the event that is fired
+             * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
+             *	you need an api key please conact support to get one issued for the tenant.
+             */
+            var options = {
+                tenant:"",
+                eventScope:"",
+                extension:"",
+                config:config,
+                connectEventHandler:connectEventHandler,
+                reconnectEventHandler:reconnectEventHandler,
+                reconnectingEventHandler:reconnectingEventHandler,
+                reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+                reconnectErrorEventHandler:reconnectErrorEventHandler,
+                reconnectFailedEventHandler:reconnectFailedEventHandler,
+                ringHandler: ringHandler,
+                connectHandler: connectHandler,
+                hangUpHandler: hangUpHandler,
+                getCallsHandler:getCallsHandler,
+                apikey:'',
+                username:"",
+                password:"",
+                room:""
+            };
 
-			var dispatcher = new CallDispatcher(options);
-	
-			dispatcher.run();
+            var dispatcher = new CallDispatcher(options);
 
-			/*This can be used to get all of the calls from the server on an interval*/
-			setInterval(function(){
-				dispatcher.getState();
-			},60000);
+            dispatcher.run();
 
-			/*Set up button listeners*/
-			document.addEventListener("DOMContentLoaded", function() {
-				document.getElementById("getcalls").onclick = function() {
-					dispatcher.getCalls();
-				};
-			});
+            /*This can be used to get all of the calls from the server on an interval*/
+            setInterval(function(){
+                    dispatcher.getState();
+            },60000);
 
-		</script>
-	</head>
+            /*Set up button listeners*/
+            document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById("getcalls").onclick = function() {
+                            dispatcher.getCalls();
+                    };
+            });
 
-	<body>
+        </script>
+    </head>
 
-		<p>Testing Call Dispatcher</p>
-		<button type="button" id="getcalls">Get Calls</button>
-	</body>
+    <body>
+
+        <p>Testing Call Dispatcher</p>
+        <button type="button" id="getcalls">Get Calls</button>
+    </body>
 </html>
