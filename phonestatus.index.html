@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <!-- // <script src="lib/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+        <script src="config/config.js"></script>
+        <script src="liveDispatcher.js"></script>
+        <script src="callDispatcher.js"></script>
+        <script src="zendeskDispatcher.js"></script>
+        <script src="freshdeskDispatcher.js"></script>
+        <script src="phoneStatusDispatcher.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+        </script>
+
+        <script>
+
+            /*These functions correspond to Socket Events, and thus belong to the parent*/
+            function connectEventHandler(event) {
+                console.log("Got socket connect event: ", event)
+            }
+            function reconnectEventHandler(event) {
+                console.log("Got socket reconnect event: ", event)
+            }
+            function reconnectingEventHandler(event) {
+                console.log("Got socket reconnecting event. Attempt number ", event)
+            }
+            function reconnectAttemptEventHandler(event) {
+                console.log("Got socket reconnect attempt event.  Attempt number ", event)
+            }
+            function reconnectErrorEventHandler(event) {
+                console.log("Got socket reconnect error event: ", event)
+            }
+            function reconnectFailedEventHandler(event) {
+                console.log("Got socket reconnect failed event")
+            }
+
+            /*These functions are for the Call Dispatcher*/
+            function peerStatusEventHandler(event){
+
+                console.log("Got peer status event: " , event);
+            }
+            function getPeersEventHandler(event){
+
+                console.log("Got peers event: " , event);
+            }
+            
+            /**
+             * Here is an explaination of the possible options
+             * [tenant]: This is the company name for each different account.  In our system
+             *	Each franchise is a different "tenant name" this will have to be set to the 
+             * 	specific site.
+             * [eventScope]: This will determine if the user is going to get all tenant events
+             *	or just their own. Set this to "tenant" for all "extension" for individual
+             * [config]: This is the configuration from config.js, should not change in most cases
+             * [getCallsHandler]: This function handles the returned object, containing calls for 
+             *  an entire tenant.
+             * [addLegHandler]: This function handles the incoming leg object.
+             * [removeLegHandler]: This fuction receives the leg object which has been removed.
+             * [callConnectHandler]: This function receives the bridge object which connected.
+             * [callDisconnectHandler]: Receives the bridge object which has disconnected.
+             * [bridgeDestroyHandler]: Receives the bridge object that has been destroyed.
+             * [bridgeCreateHandler]: Receives the bridge object that has been created.
+             * [callTransferHandler]: Receives the bridge object which has experienced a transfer.
+             * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
+             *	you need an api key please conact support to get one issued for the tenant.
+             * SEE BOTTOM OF FILE FOR FURTHER EXPLANATION OF CALLS
+             */
+            var options = {
+                tenant:"Yahweh",
+                eventScope:"extension",
+                extension:"600",
+                config:config,
+                connectEventHandler:connectEventHandler,
+                reconnectEventHandler:reconnectEventHandler,
+                reconnectingEventHandler:reconnectingEventHandler,
+                reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+                reconnectErrorEventHandler:reconnectErrorEventHandler,
+                reconnectFailedEventHandler:reconnectFailedEventHandler,
+                peerStatusHandler:peerStatusEventHandler,
+                getPeersHandler:getPeersEventHandler,
+                apikey:"NgXvRZP1-9Rc8-93T6-ldxjGHOpQ4x6",
+                username:"mnorbyyw",
+                password:"8x8NoNoNo!",
+                // room:"Yahweh/600"
+            };
+
+            var dispatcher = new PhoneStatusDispatcher(options);
+
+            dispatcher.run();
+
+            /*This can be used to get all of the calls from the server on an interval*/
+            setInterval(function(){
+                dispatcher.getState();
+            },60000);
+
+            /*Set up button listeners*/
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("getcalls").onclick = function() {
+                    dispatcher.getPeers();
+                };
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <p>Testing Phone Status Dispatcher</p>
+        <button type="button" id="getcalls">Get Peers</button>
+    </body>
+
+</html>
