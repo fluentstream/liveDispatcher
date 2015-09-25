@@ -35,7 +35,7 @@ function LiveDispatcher(options){
  * THIS MUST be defined in the sub class.
  */
 LiveDispatcher.prototype.run = function(){
-
+console.log("Starting the run of the disatcher");
     this.authenticationMaxAttempts = this.config.authentication.maxAttempts;
     this.connect();
     this.listen();
@@ -65,6 +65,7 @@ LiveDispatcher.prototype.connect = function(){
         /*Build the connect options here*/
         var options = {};
         options.secure = this.config.socket.secure;
+        // options.secure = false;
         options.reconnectionAttempts = this.config.socket.connectAttempts;
         options.reconnection = true;
         options.transport = this.config.socket.transport;
@@ -83,7 +84,7 @@ LiveDispatcher.prototype.connect = function(){
 
         /*Lets create the connection here*/
         this.connection = io.connect(connectURL , options);
-
+console.log("#######################################",this.connection);
     }
     /*If unable to connect to the socket throw an error*/
     catch(error){
@@ -98,9 +99,17 @@ LiveDispatcher.prototype.connect = function(){
 
     var that = this;
 
+    this.connection.on("connect",function(a,b,c){
+        console.log("CONNECTED: " , a,b,c);
+
+        setTimeout(function(){
+            that.connection.emit("getConf");
+        },6000);
+        
+    });
     /*We can only subscribe when the connection is ready!*/
     this.connection.on("connectionReady" , function(event) {
-
+        console.log("Got Connection Ready Event: " , event);
         /*Lets subscribe since we are ready*/
         that.subscribe();
 
@@ -176,10 +185,16 @@ LiveDispatcher.prototype.getState = function(){
     this.connection.emit(this.initEvent , this.tenant);
 }
 
+LiveDispatcher.prototype.subscribe = function(){
+
+    this.connection.emit("subscribe","/myRoom",function(a,b,c){
+        console.log("Got subscribe event with params: " , a,b,c);
+    });    
+}
 /**
  * This is going to subscribe the the room we need to listen to.
  */
-LiveDispatcher.prototype.subscribe = function(){
+LiveDispatcher.prototype.subscribeORIG = function(){
 
     var subscribeRoom = null;
 

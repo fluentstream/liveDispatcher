@@ -1,0 +1,176 @@
+<html>
+    <head>
+        <!-- // <script src="lib/socket.io.js"></script> -->
+        <!--<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>-->
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="config/config.js"></script>
+        <script src="liveDispatcher.js"></script>
+        <script src="callDispatcher.js"></script>
+        <script src="zendeskDispatcher.js"></script>
+        <script src="freshdeskDispatcher.js"></script>
+        <script src="phoneStatusDispatcher.js"></script>
+        <script src="conferenceDispatcher.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+            </script>
+
+        <script>
+
+            /*These functions correspond to Socket Events, and thus belong to the parent*/
+            function connectEventHandler(event) {
+                console.log("Got socket connect event: ", event)
+            }
+            function reconnectEventHandler(event) {
+                console.log("Got socket reconnect event: ", event)
+            }
+            function reconnectingEventHandler(event) {
+                console.log("Got socket reconnecting event. Attempt number ", event)
+            }
+            function reconnectAttemptEventHandler(event) {
+                console.log("Got socket reconnect attempt event.  Attempt number ", event)
+            }
+            function reconnectErrorEventHandler(event) {
+                console.log("Got socket reconnect error event: ", event)
+            }
+            function reconnectFailedEventHandler(event) {
+                console.log("Got socket reconnect failed event")
+            }
+
+            /*These functions are for the Call Dispatcher*/
+            // function addLegHandler(event) {
+            //     console.log("Got addLeg event: ", event);
+            // }
+            // function removeLegHandler(event) {
+            //     console.log("Got removeLeg event: ", event);
+            // }
+            // function callConnectHandler(event) {
+            //     console.log("Got callConnect event: ", event);
+            // }
+            // function callDisconnectHandler(event) {
+            //     console.log("Got callDisconnect event: ", event);
+            // }
+            // function bridgeDestroyHandler(event) {
+            //     console.log("Got bridgeDestroy event: ", event);
+            // }
+            // function bridgeCreateHandler(event) {
+            //     console.log("Got bridgeCreate event: ", event);
+            // }
+            // function callTransferHandler(event) {
+            //     console.log("Got callTransfer event: ", event);
+            // }
+            // function getCallsHandler(data){
+            //     console.log("Got calls data: " , data);
+            // }
+
+            /**
+             * Here is an explaination of the possible options
+             * [tenant]: This is the company name for each different account.  In our system
+             *	Each franchise is a different "tenant name" this will have to be set to the 
+             * 	specific site.
+             * [eventScope]: This will determine if the user is going to get all tenant events
+             *	or just their own. Set this to "tenant" for all "extension" for individual
+             * [config]: This is the configuration from config.js, should not change in most cases
+             * [getCallsHandler]: This function handles the returned object, containing calls for 
+             *  an entire tenant.
+             * [addLegHandler]: This function handles the incoming leg object.
+             * [removeLegHandler]: This fuction receives the leg object which has been removed.
+             * [callConnectHandler]: This function receives the bridge object which connected.
+             * [callDisconnectHandler]: Receives the bridge object which has disconnected.
+             * [bridgeDestroyHandler]: Receives the bridge object that has been destroyed.
+             * [bridgeCreateHandler]: Receives the bridge object that has been created.
+             * [callTransferHandler]: Receives the bridge object which has experienced a transfer.
+             * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
+             *	you need an api key please conact support to get one issued for the tenant.
+             * SEE BOTTOM OF FILE FOR FURTHER EXPLANATION OF CALLS
+             */
+            var options = {
+                tenant:"",
+                eventScope:"",
+                extension:"",
+                config:config,
+                connectEventHandler:connectEventHandler,
+                reconnectEventHandler:reconnectEventHandler,
+                reconnectingEventHandler:reconnectingEventHandler,
+                reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+                reconnectErrorEventHandler:reconnectErrorEventHandler,
+                reconnectFailedEventHandler:reconnectFailedEventHandler,
+                // getCallsHandler:getCallsHandler,
+                // addLegHandler: addLegHandler,
+                // removeLegHandler: removeLegHandler,
+                // callConnectHandler: callConnectHandler,
+                // callDisconnectHandler: callDisconnectHandler,
+                // bridgeDestroyHandler: bridgeDestroyHandler,
+                // bridgeCreateHandler: bridgeCreateHandler,
+                // callTransferHandler: callTransferHandler,
+                // apikey:'NgXvRZP1-9Rc8-93T6-ldxjGHOpQ4x6',
+                apikey:"XxlqiXEy-bYyy-TLcX-5WnnEYHVoF8K",
+                username:"",
+                password:"",
+                room:""
+            };
+
+            var dispatcher = new ConferenceDispatcher(options);
+
+            dispatcher.run();
+
+            /*This can be used to get all of the calls from the server on an interval*/
+            // setInterval(function(){
+            //     dispatcher.getState();
+            // },60000);
+
+            /*Set up button listeners*/
+            // document.addEventListener("DOMContentLoaded", function() {
+            //     document.getElementById("getcalls").onclick = function() {
+            //         dispatcher.getCalls();
+            //     };
+            // });
+
+        </script>
+    </head>
+
+    <body>
+        <p>Testing Conference Dispatcher</p>
+        <!-- <button type="button" id="getcalls">Get Calls</button> -->
+    </body>
+
+</html>
+
+<!--
+
+The new model for Live Calls (LC) relies on two essential concepts: the bridge and the leg.  
+These concepts, each represented in code as objects, together represent a “call”.  Due to 
+the wide variety of possible call types (direct, transfers, call groups, call forwarding), 
+bridges and legs are created in a variety of ways.  The goal of LC is to insulate you from 
+this complexity.  Rather than experiencing the actual events generated by the system as 
+calls are made and received, LC presents only the objects that are created.  These objects 
+are presented along-side named events, indicating their progress through the life of a call.  
+
+The leg is the most basic element of a call.  When a call is made, two legs are generated: 
+one for the caller contacting the phone server, and a second for the phone server 
+connecting to the callee.  During the life of a call, more legs can be created.  These can 
+represent an added connection to a third caller due to a transfer, or to multiple members 
+of a call group.  For most intents and purposes, a leg does little.  They are added and 
+removed with little impact on the experience of the phone’s user.  Legs are stored in a 
+bridge, the object which is closest to the notion of a “call”.  
+
+The bridge acts as a pool for legs, which exists only as long as it contains legs.  When a 
+call is made, a bridge is created with the legs.  The legs are stored inside the bridge.  
+As additional legs are created, they can be added to the bridge.  As legs die, they are 
+removed.  The call lives and dies with the bridge.  While some types of call forwarding 
+require multiple bridges, this should not have a significant effect in your code.  In those 
+scenarios, the bridges live simultaneously until one is absorbed into the other.  The 
+bridge which is absorbed is destroyed, and the system moves forward. 
+
+The life of a call consists of the following:
+    - bridgeCreate: The bridge is created
+    - addLeg (x *): Legs are created and added to the bridge (number can vary)
+    - callConnect: The caller has connected to the callee (who has picked up)
+    - callDisconnect: Either the caller or the callee has disconnected the call.
+    - removeLeg (x *): Legs are destroyed. Always equal to the number of addLeg events.
+    - bridgeDestroy: Once all legs are destroyed, the bridge is destroyed.
+
+The bridge is created and acts as a pool to store the legs.  The call is connected and 
+disconnected, according to the users.  Once the call is finished, legs are destroyed, 
+triggering the destruction of the bridge.  Though this order is highly flexible, the bridge 
+and leg objects stay true to their functions, and are thus reliable.  
+
+-->
