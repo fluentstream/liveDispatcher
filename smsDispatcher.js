@@ -9,7 +9,7 @@
 function SmsDispatcher(options){
 
     // this.initEvent = "getCalls";
-    this.namespace = "/sms";
+    this.namespace = "/smsMessages";
 
     LiveDispatcher.call(this, options);
 }
@@ -22,28 +22,28 @@ SmsDispatcher.prototype = new LiveDispatcher();
 SmsDispatcher.prototype.listen = function(){
 
     if(_.isFunction(this.messageHandle))
-        this.connection.on("message" , this.messageHandle);
+        this.connection.on("smsMessage" , this.messageHandle);
 };
 
-SmsDispatcher.prototype.run = function(){
+// SmsDispatcher.prototype.run = function(){
 
-    console.log("Running the child run...");
-    this.authenticationMaxAttempts = this.config.authentication.maxAttempts;
-    this.connect();
+//     console.log("Running the child run...");
+//     this.authenticationMaxAttempts = this.config.authentication.maxAttempts;
+//     this.connect();
 
-    var that = this;
+//     var that = this;
 
-    this.connection.on("connect" , function(event){
-        console.log("We are connected to the node server....",event);
+//     this.connection.on("connect" , function(event){
+//         console.log("We are connected to the node server....",event);
 
-        setTimeout(function(){
-            that.listen();
-            that.subscribe();    
-        },5000);
+//         setTimeout(function(){
+//             that.listen();
+//             that.subscribe();    
+//         },5000);
         
-    });
-    // this.listen();
-}
+//     });
+//     // this.listen();
+// }
 
 // SmsDispatcher.prototype.getCalls = function(){
 

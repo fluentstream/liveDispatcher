@@ -190,8 +190,8 @@ LiveDispatcher.prototype.subscribe = function(){
     /*Lets figure out the room we need to subscribe to*/
     if(this.room != null){
         /*This means the room was passed in the options so lets make sure it includes tenant*/
-        // if(this.room.indexOf(this.tenant) == -1)
-        //     throw "Invalid room declaration. The tenant name must be in the room";
+        if(this.room.indexOf(this.tenant) == -1)
+            throw "Invalid room declaration. The tenant name must be in the room";
 
         subscribeRoom = this.room;
     }
