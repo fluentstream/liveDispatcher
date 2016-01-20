@@ -37,6 +37,13 @@ CallDispatcher.prototype.listen = function(){
         this.connection.on("bridgeCreate", this.bridgeCreateHandler);
     if(_.isFunction(this.callTransferHandler))
         this.connection.on("callTransfer", this.callTransferHandler);
+    if(_.isFunction(this.callGroupRinging))
+        this.connection.on("callGroupRinging", this.callGroupRinging);
+    if(_.isFunction(this.callGroupAnswered))
+        this.connection.on("callGroupAnswered", this.callGroupAnswered);
+    if(_.isFunction(this.callGroupHangup))
+        this.connection.on("callGroupHangup", this.callGroupHangup);
+        
 };
 
 CallDispatcher.prototype.getCalls = function(){

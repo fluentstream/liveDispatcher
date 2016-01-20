@@ -58,6 +58,15 @@
             function getCallsHandler(data){
                 console.log("Got calls data: " , data);
             }
+            function callGroupRinging(event){
+                console.log("Got callGroupRinging event: " , event);
+            }
+            function callGroupAnswered(event){
+                console.log("Got callGroupAnswered event: " , event);
+            }
+            function callGroupHangup(event){
+                console.log("Got callGroupHangup event: " , event);
+            }
 
             /**
              * Here is an explaination of the possible options
@@ -76,6 +85,9 @@
              * [bridgeDestroyHandler]: Receives the bridge object that has been destroyed.
              * [bridgeCreateHandler]: Receives the bridge object that has been created.
              * [callTransferHandler]: Receives the bridge object which has experienced a transfer.
+             * [callGroupRinging]: Receives the callgroup object for new calls to a call group.
+             * [callGroupAnswered]: Receives the callgroup object for answered call group calls.
+             * [callGroupHangup]: Receives the callgroup object for a call which has left the call group.
              * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
              *	you need an api key please conact support to get one issued for the tenant.
              * SEE BOTTOM OF FILE FOR FURTHER EXPLANATION OF CALLS
@@ -99,6 +111,9 @@
                 bridgeDestroyHandler: bridgeDestroyHandler,
                 bridgeCreateHandler: bridgeCreateHandler,
                 callTransferHandler: callTransferHandler,
+                callGroupRinging: callGroupRinging,
+                callGroupAnswered: callGroupAnswered,
+                callGroupHangup: callGroupHangup,
                 apikey:'',
                 username:"",
                 password:"",
