@@ -37,6 +37,12 @@ QueueDispatcher.prototype.listen = function(){
 		this.connection.on("connectAgent" , this.connectAgentHandler);
 	if(_.isFunction(this.disconnectAgentHandler))
 		this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
-	if(_.isFunction(queueDataHander))
+	if(_.isFunction(this.queueDataHander))
 		this.connection.on("queueData" , this.queueDataHander);
+	if(_.isFunction(this.exitKeypressHandler))
+		this.connection.on("exitkeypress" , this.exitKeypressHandler);
+	if(_.isFunction(this.exitTimeoutHandler))
+		this.connection.on("exittimeout" , this.exitTimeoutHandler);
+	if(_.isFunction(this.exitLeaveEmptyHandler))
+		this.connection.on("exitleaveempty" , this.exitLeaveEmptyHandler);
 };
