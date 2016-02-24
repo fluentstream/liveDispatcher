@@ -57,6 +57,18 @@
                 console.log("Got queue data event.: " , data);
             }
 
+            function exitKeypressHandler(data){
+                console.log("Got exit keypress event: ", data);
+            }
+
+            function exitTimeoutHandler(data){
+                console.log("Got exit timeout event: ", data);
+            }
+
+            function exitLeaveEmptyHandler(data){
+                console.log("Got exit leave empty event: ", data);
+            }
+
             /**
              * Here is an explaination of the possible options
              * [tenant]: This is the company name for each different account.  In our system
@@ -96,7 +108,10 @@
                 stopCallingAgentHandler:stopCallingAgentHandler,
                 connectAgentHandler:connectAgentHandler,
                 disconnectAgentHandler:disconnectAgentHandler,
-                queueDataHander:queueDataHander
+                queueDataHander:queueDataHander,
+                exitKeypressHandler:exitKeypressHandler,
+                exitTimeoutHandler:exitTimeoutHandler,
+                exitLeaveEmptyHandler:exitLeaveEmptyHandler
             };
 
             var dispatcher = new QueueDispatcher(options);
