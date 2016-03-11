@@ -37,6 +37,10 @@ QueueDispatcher.prototype.listen = function(){
 		this.connection.on("connectAgent" , this.connectAgentHandler);
 	if(_.isFunction(this.disconnectAgentHandler))
 		this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
+    if(_.isFunction(this.addAgentHandler))
+		this.connection.on("addAgent" , this.addAgentHandler);
+	if(_.isFunction(this.removeAgentHandler))
+		this.connection.on("removeAgent" , this.removeAgentHandler);
 	if(_.isFunction(this.queueDataHander))
 		this.connection.on("queueData" , this.queueDataHander);
 	if(_.isFunction(this.exitKeypressHandler))

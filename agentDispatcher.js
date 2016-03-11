@@ -31,6 +31,8 @@ AgentDispatcher.prototype.listen = function(){
 		this.connection.on("agentComplete" , this.agentCompleteHandler);
 	if(_.isFunction(this.addAgentHandler))
 		this.connection.on("addAgent" , this.addAgentHandler);
+    if(_.isFunction(this.removeAgentHandler))
+        this.connection.on("removeAgent" , this.removeAgentHandler);
 	if(_.isFunction(this.agentRingNoAnswerHandler))
 		this.connection.on("agentRingNoAnswer" , this.agentRingNoAnswerHandler);
 	if(_.isFunction(this.updateAgentHandler))

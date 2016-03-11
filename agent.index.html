@@ -41,6 +41,9 @@
             function addAgentHandler(event){
                 console.log("Got event : add agent" , event);
             }
+            function removeAgentHandler(event){
+                console.log("Got event : remove agent" , event);
+            }
             function agentRingNoAnswerHandler(event){
                 console.log("Got event : agent ring no answer" , event);
             }
@@ -64,6 +67,8 @@
              * 	you "start" the program there will be people on the phone or events happening,
              *	this function is how you will handle initilization of those events
              * [ringHandler]: When a phone starts ringing this is the event that will be fired
+             * [addAgentHandler]: This event is fired when an agent joins the queue
+             * [removeAgentHandler]: This event is fired when an agent leaves the queue
              * [connectHandler]: When a user "answers" the phone this is the event that is fired
              * [hangUpHandler]: When a user hangs up the phone this is the event that is fired
              * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
@@ -89,6 +94,7 @@
                 agentConnectHandler:agentConnectHandler,
                 agentCompleteHandler:agentCompleteHandler,
                 addAgentHandler:addAgentHandler,
+                removeAgentHandler:removeAgentHandler,
                 agentRingNoAnswerHandler:agentRingNoAnswerHandler,
                 updateAgentHandler:updateAgentHandler,
                 agentDataHandler:agentDataHandler
