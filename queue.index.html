@@ -56,6 +56,14 @@
             function queueDataHander(data){
                 console.log("Got queue data event.: " , data);
             }
+            
+            function addAgentHandler(event){
+                console.log("Got add agent event: " , event);
+            }
+            
+            function removeAgentHandler(event){
+                console.log("Got remove agent event: " , event);
+            }
 
             function exitKeypressHandler(data){
                 console.log("Got exit keypress event: ", data);
@@ -83,6 +91,8 @@
              * [stopCallingAgentHandler]: This happens when an agents phone stops ringing from a queue call
              * [connectAgentHandler]: This happens when an agent answers the phone for a queue call
              * [disconnectAgentHandler]: This happens when an agent ends a queue call
+             * [addAgentHandler]: This event is fired when an agent joins the queue
+             * [removeAgentHandler]: This event is fired when an agent leaves the queue
              * [apikey]: This is the specific key assigned to THIS tenant. They must match, if 
              *	you need an api key please conact support to get one issued for the tenant.
              */
@@ -108,6 +118,8 @@
                 stopCallingAgentHandler:stopCallingAgentHandler,
                 connectAgentHandler:connectAgentHandler,
                 disconnectAgentHandler:disconnectAgentHandler,
+                addAgentHandler:addAgentHandler,
+                removeAgentHandler:removeAgentHandler,
                 queueDataHander:queueDataHander,
                 exitKeypressHandler:exitKeypressHandler,
                 exitTimeoutHandler:exitTimeoutHandler,
