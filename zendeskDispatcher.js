@@ -21,8 +21,6 @@ function ZendeskDispatcher(options){
 
     LiveDispatcher.call(this, options);
 
-    _.bindAll(this , "registerAgent" , "emit" , "connect" , "run" , "authenticate" , "listen" , 
-        "reconnection" , "pong" , "subscribe");
 }
 
 ZendeskDispatcher.prototype = new LiveDispatcher();

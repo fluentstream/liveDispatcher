@@ -13,7 +13,6 @@ function QueueDispatcher(options){
 
 	LiveDispatcher.call( this , options);
 
-	_.bindAll(this , "listen");
 }
 
 QueueDispatcher.prototype = new LiveDispatcher();

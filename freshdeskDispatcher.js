@@ -23,8 +23,6 @@ function FreshdeskDispatcher(options){
 
     LiveDispatcher.call(this, options);
 
-    _.bindAll(this , "registerAgent" , "emit" , "connect" , "run" , "authenticate" , "listen" , 
-        "subscribe" , "reconnection" , "pong");
 }
 
 FreshdeskDispatcher.prototype = new LiveDispatcher();

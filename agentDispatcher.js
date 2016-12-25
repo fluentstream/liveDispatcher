@@ -13,7 +13,6 @@ function AgentDispatcher(options){
 
 	LiveDispatcher.call( this , options);
 
-	_.bindAll(this , "listen");
 }
 
 AgentDispatcher.prototype = new LiveDispatcher();
