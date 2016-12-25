@@ -21,7 +21,7 @@ SmsDispatcher.prototype = new LiveDispatcher();
 */
 SmsDispatcher.prototype.listen = function(){
 
-    if(_.isFunction(this.messageHandle))
+    if('function' === typeof this.messageHandle)
         this.connection.on("smsMessage" , this.messageHandle);
 };
 

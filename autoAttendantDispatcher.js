@@ -21,7 +21,7 @@ AutoAttendantDispatcher.prototype = new LiveDispatcher();
 */
 AutoAttendantDispatcher.prototype.listen = function(){
 
-    if(_.isFunction(this.keypressHandler))
+    if('function' === typeof (this.keypressHandler))
         this.connection.on("keypress" , this.keypressHandler);
 };
 

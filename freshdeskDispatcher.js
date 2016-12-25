@@ -64,16 +64,16 @@ FreshdeskDispatcher.prototype.registerAgent = function(){
 */
 FreshdeskDispatcher.prototype.listen = function(){
 
-    if(_.isFunction(this.registrationFailedHandler))
+    if('function' === typeof this.registrationFailedHandler)
         this.connection.on("registrationFailed" , this.registrationFailedHandler);
-    if(_.isFunction(this.agentRingingHandler))
+    if('function' === typeof this.agentRingingHandler)
         this.connection.on("agentRinging" , this.agentRingingHandler);
-    if(_.isFunction(this.customerCreationErrorHandler))
+    if('function' === typeof this.customerCreationErrorHandler)
         this.connection.on("createNewCustomerError" , this.customerCreationErrorHandler);
-    if(_.isFunction(this.callCompleteHandler))
+    if('function' === typeof this.callCompleteHandler)
         this.connection.on("callComplete" , this.callCompleteHandler);
-    if(_.isFunction(this.agentConnectHandler))
+    if('function' === typeof this.agentConnectHandler)
         this.connection.on("agentConnect" , this.agentConnectHandler);
-    if(_.isFunction(this.updateTicketsHandler))
+    if('function' === typeof this.updateTicketsHandler)
         this.connection.on("updatedProfileTickets" , this.updateTicketsHandler);
 }

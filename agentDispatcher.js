@@ -23,19 +23,19 @@ AgentDispatcher.prototype = new LiveDispatcher();
  */
 AgentDispatcher.prototype.listen = function(){
 
-	if(_.isFunction(this.agentCalledHandler))
+	if('function' === typeof this.agentCalledHandler)
 		this.connection.on("agentCalled" , this.agentCalledHandler);
-	if(_.isFunction(this.agentConnectHandler))
+	if('function' === typeof this.agentConnectHandler)
 		this.connection.on("agentConnect" , this.agentConnectHandler);
-	if(_.isFunction(this.agentCompleteHandler))
+	if('function' === typeof this.agentCompleteHandler)
 		this.connection.on("agentComplete" , this.agentCompleteHandler);
-	if(_.isFunction(this.addAgentHandler))
+	if('function' === typeof this.addAgentHandler)
 		this.connection.on("addAgent" , this.addAgentHandler);
-	if(_.isFunction(this.agentRingNoAnswerHandler))
+	if('function' === typeof this.agentRingNoAnswerHandler)
 		this.connection.on("agentRingNoAnswer" , this.agentRingNoAnswerHandler);
-	if(_.isFunction(this.updateAgentHandler))
+	if('function' === typeof this.updateAgentHandler)
 		this.connection.on("updateAgent" , this.updateAgentHandler);
-	if(_.isFunction(this.agentDataHandler))
+	if('function' === typeof this.agentDataHandler)
 		this.connection.on("agentData" , this.agentDataHandler);
 
 };

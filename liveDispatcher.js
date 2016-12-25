@@ -105,30 +105,30 @@ LiveDispatcher.prototype.connect = function(){
         that.subscribe();
 
         /*Lets call the connectEventHandler to let someone know we are connected*/
-        if(_.isFunction(that.connectEventHandler))
+        if('function' === typeof that.connectEventHandler)
             that.connectEventHandler(event);
 
         /*Now lets call the getState function to get the initial state*/
-        if(_.isFunction(that.getState))
+        if('function' === typeof that.getState)
             that.getState(event);
     });
 
-    if(_.isFunction(this.disconnectEventHandler))
+    if('function' === typeof this.disconnectEventHandler)
         this.connection.on("disconnect", this.disconnectEventHandler);
 
-    if(_.isFunction(this.reconnectEventHandler))
+    if('function' === typeof this.reconnectEventHandler)
         this.connection.on("reconnect", this.reconnectEventHandler);
 
-    if(_.isFunction(this.reconnectingEventHandler))
+    if('function' === typeof this.reconnectingEventHandler)
         this.connection.on("reconnecting", this.reconnectingEventHandler);
 
-    if(_.isFunction(this.reconnectAttemptEventHandler))
+    if('function' === typeof this.reconnectAttemptEventHandler)
         this.connection.on("reconnect_attempt", this.reconnectAttemptEventHandler);
 
-    if(_.isFunction(this.reconnectErrorEventHandler))
+    if('function' === typeof this.reconnectErrorEventHandler)
         this.connection.on("reconnect_error", this.reconnectErrorEventHandler);
 
-    if(_.isFunction(this.reconnectFailedEventHandler))
+    if('function' === typeof this.reconnectFailedEventHandler)
         this.connection.on("reconnect_failed", this.reconnectFailedEventHandler);
 
     /*Lets see if we have an error on this connection type*/

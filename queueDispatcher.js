@@ -23,26 +23,26 @@ QueueDispatcher.prototype = new LiveDispatcher();
  */
 QueueDispatcher.prototype.listen = function(){
 
-	if(_.isFunction(this.addQueueHandler))
+	if('function' === typeof this.addQueueHandler)
 		this.connection.on("addQueue" , this.addQueueHandler);
-	if(_.isFunction(this.joinHandler))
+	if('function' === typeof this.joinHandler)
 		this.connection.on("join" , this.joinHandler);
-	if(_.isFunction(this.abandonHandler))
+	if('function' === typeof this.abandonHandler)
 		this.connection.on("abandon" , this.abandonHandler);
-	if(_.isFunction(this.callingAgenthandler))
+	if('function' === typeof this.callingAgenthandler)
 		this.connection.on("callingAgent" , this.callingAgenthandler);
-	if(_.isFunction(this.stopCallingAgentHandler))
+	if('function' === typeof this.stopCallingAgentHandler)
 		this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
-	if(_.isFunction(this.connectAgentHandler))
+	if('function' === typeof this.connectAgentHandler)
 		this.connection.on("connectAgent" , this.connectAgentHandler);
-	if(_.isFunction(this.disconnectAgentHandler))
+	if('function' === typeof this.disconnectAgentHandler)
 		this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
-	if(_.isFunction(this.queueDataHander))
+	if('function' === typeof this.queueDataHander)
 		this.connection.on("queueData" , this.queueDataHander);
-	if(_.isFunction(this.exitKeypressHandler))
+	if('function' === typeof this.exitKeypressHandler)
 		this.connection.on("exitkeypress" , this.exitKeypressHandler);
-	if(_.isFunction(this.exitTimeoutHandler))
+	if('function' === typeof this.exitTimeoutHandler)
 		this.connection.on("exittimeout" , this.exitTimeoutHandler);
-	if(_.isFunction(this.exitLeaveEmptyHandler))
+	if('function' === typeof this.exitLeaveEmptyHandler)
 		this.connection.on("exitleaveempty" , this.exitLeaveEmptyHandler);
 };

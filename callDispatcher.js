@@ -21,27 +21,27 @@ CallDispatcher.prototype = new LiveDispatcher();
 */
 CallDispatcher.prototype.listen = function(){
 
-    if(_.isFunction(this.getCallsHandler))
+    if('function' === typeof this.getCallsHandler)
         this.connection.on("calls" , this.getCallsHandler);
-    if(_.isFunction(this.addLegHandler))
+    if('function' === typeof this.addLegHandler)
         this.connection.on("addLeg", this.addLegHandler);
-    if(_.isFunction(this.removeLegHandler))
+    if('function' === typeof this.removeLegHandler)
         this.connection.on("removeLeg", this.removeLegHandler);
-    if(_.isFunction(this.callConnectHandler))
+    if('function' === typeof this.callConnectHandler)
         this.connection.on("callConnect", this.callConnectHandler);
-    if(_.isFunction(this.callDisconnectHandler))
+    if('function' === typeof this.callDisconnectHandler)
         this.connection.on("callDisconnect", this.callDisconnectHandler);
-    if(_.isFunction(this.bridgeDestroyHandler))
+    if('function' === typeof this.bridgeDestroyHandler)
         this.connection.on("bridgeDestroy", this.bridgeDestroyHandler);
-    if(_.isFunction(this.bridgeCreateHandler))
+    if('function' === typeof this.bridgeCreateHandler)
         this.connection.on("bridgeCreate", this.bridgeCreateHandler);
-    if(_.isFunction(this.callTransferHandler))
+    if('function' === typeof this.callTransferHandler)
         this.connection.on("callTransfer", this.callTransferHandler);
-    if(_.isFunction(this.callGroupRinging))
+    if('function' === typeof this.callGroupRinging)
         this.connection.on("callGroupRinging", this.callGroupRinging);
-    if(_.isFunction(this.callGroupAnswered))
+    if('function' === typeof this.callGroupAnswered)
         this.connection.on("callGroupAnswered", this.callGroupAnswered);
-    if(_.isFunction(this.callGroupHangup))
+    if('function' === typeof this.callGroupHangup)
         this.connection.on("callGroupHangup", this.callGroupHangup);
         
 };
