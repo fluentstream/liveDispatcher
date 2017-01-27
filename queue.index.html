@@ -37,7 +37,7 @@
                 console.log("Got abandon event: " , event);
             }
 
-            function callingAgenthandler(event){
+            function callingAgentHandler(event){
                 console.log("Got calling agent event: " , event);
             }
 
@@ -53,7 +53,19 @@
                 console.log("Got disconnect agent event: " , event);
             }
 
-            function queueDataHander(data){
+            function addAgentHandler(event){
+                console.log("Got add agent event: " , event);
+            }
+
+            function removeAgentHandler(event){
+                console.log("Got remove agent event: " , event);
+            }
+
+            function pauseAgentHandler(event){
+                console.log("Got pause agent event: " , event);
+            }
+
+            function queueDataHandler(data){
                 console.log("Got queue data event.: " , data);
             }
 
@@ -79,6 +91,8 @@
              * [config]: This is the configuration from config.js, should not change in most cases
              * [joinHandler]: This happens when a customer enters the queue. So a new call
              * [abandonHandler]: When a customer in the queue hangs up before talking to an agent
+             * [addAgentHandler] : A dynamic agent has logged into a queue
+             * [removeAgentHandler] : A dynamic agent has left a queue
              * [callingAgentHandler]: This happens when an agents phone starts ringing from a queue call
              * [stopCallingAgentHandler]: This happens when an agents phone stops ringing from a queue call
              * [connectAgentHandler]: This happens when an agent answers the phone for a queue call
@@ -104,11 +118,13 @@
                 room:"",
                 joinHandler:joinHandler,
                 abandonHandler:abandonHandler,
-                callingAgenthandler:callingAgenthandler,
+                callingAgentHandler:callingAgentHandler,
                 stopCallingAgentHandler:stopCallingAgentHandler,
                 connectAgentHandler:connectAgentHandler,
                 disconnectAgentHandler:disconnectAgentHandler,
-                queueDataHander:queueDataHander,
+                addAgentHandler:addAgentHandler,
+                removeAgentHandler:removeAgentHandler,
+                queueDataHandler:queueDataHandler,
                 exitKeypressHandler:exitKeypressHandler,
                 exitTimeoutHandler:exitTimeoutHandler,
                 exitLeaveEmptyHandler:exitLeaveEmptyHandler

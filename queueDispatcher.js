@@ -28,16 +28,22 @@ QueueDispatcher.prototype.listen = function(){
 		this.connection.on("join" , this.joinHandler);
 	if('function' === typeof this.abandonHandler)
 		this.connection.on("abandon" , this.abandonHandler);
-	if('function' === typeof this.callingAgenthandler)
-		this.connection.on("callingAgent" , this.callingAgenthandler);
+	if('function' === typeof this.callingAgentHandler)
+		this.connection.on("callingAgent" , this.callingAgentHandler);
 	if('function' === typeof this.stopCallingAgentHandler)
 		this.connection.on("stopCallingAgent" , this.stopCallingAgentHandler);
 	if('function' === typeof this.connectAgentHandler)
 		this.connection.on("connectAgent" , this.connectAgentHandler);
 	if('function' === typeof this.disconnectAgentHandler)
 		this.connection.on("disconnectAgent" , this.disconnectAgentHandler);
-	if('function' === typeof this.queueDataHander)
-		this.connection.on("queueData" , this.queueDataHander);
+	if('function' === typeof this.addAgentHandler)
+		this.connection.on("addAgent" , this.addAgentHandler);
+	if('function' === typeof this.removeAgentHandler)
+		this.connection.on("removeAgent" , this.removeAgentHandler);
+	if('function' === typeof this.pauseAgentHandler)
+		this.connection.on("pauseAgent" , this.pauseAgentHandler);
+	if('function' === typeof this.queueDataHandler)
+		this.connection.on("queueData" , this.queueDataHandler);
 	if('function' === typeof this.exitKeypressHandler)
 		this.connection.on("exitkeypress" , this.exitKeypressHandler);
 	if('function' === typeof this.exitTimeoutHandler)
