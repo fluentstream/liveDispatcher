@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <!-- // <script src="lib/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="config/config.js"></script>
+        <script src="liveDispatcher.js"></script>
+        <script src="callDispatcher.js"></script>
+        <script src="zendeskDispatcher.js"></script>
+        <script src="freshdeskDispatcher.js"></script>
+        <script src="phoneStatusDispatcher.js"></script>
+        <script src="smsDispatcher.js"></script>
+        <script src="autoAttendantDispatcher.js"></script>
+        <script src="fluentcloudEventsDispatcher.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js">
+            </script>
+
+        <script>
+
+            /*These functions correspond to Socket Events, and thus belong to the parent*/
+            function connectEventHandler(event) {
+                console.log("Got socket connect event: ", event)
+            }
+            function reconnectEventHandler(event) {
+                console.log("Got socket reconnect event: ", event)
+            }
+            function reconnectingEventHandler(event) {
+                console.log("Got socket reconnecting event. Attempt number ", event)
+            }
+            function reconnectAttemptEventHandler(event) {
+                console.log("Got socket reconnect attempt event.  Attempt number ", event)
+            }
+            function reconnectErrorEventHandler(event) {
+                console.log("Got socket reconnect error event: ", event)
+            }
+            function reconnectFailedEventHandler(event) {
+                console.log("Got socket reconnect failed event")
+            }
+
+            function newCallHandler(event){
+                console.log("Got new call event: ", event);
+            }
+
+            function npanxxHandler(event){
+                console.log("Got npanxx event: ", event);
+            }
+
+            function dialBeginHandler(event){
+                console.log("Got dialBegin event: ", event);
+            }
+
+            function dialEndHandler(event){
+                console.log("Got dialEnd event: ", event);
+            }
+
+            function newContactHandler(event){
+                console.log("Got newContact event: ", event);
+            }
+
+            function updateContactHandler(event){
+                console.log("Got updateContact event: ", event);
+            }
+
+            function newConnectedLineHandler(event){
+                console.log("Got newConnectedLine event: ", event);
+            }
+
+            function dialBeginContactHandler(event){
+                console.log("Got dialBeginContact event: ", event);
+            }
+
+            function dialEndContactHandler(event){
+                console.log("Got dialEndContact event: ", event);
+            }
+
+            /*These functions are for the Call Dispatcher*/
+            // function keypressHandler(event) {
+            //     console.log("Got keypress event: ", event);
+            // }
+
+            var options = {
+                tenant:"TrainingRuyland1",
+                eventScope:"tenant",
+                extension:"8000",
+                config:config,
+                connectEventHandler:connectEventHandler,
+                reconnectEventHandler:reconnectEventHandler,
+                reconnectingEventHandler:reconnectingEventHandler,
+                reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+                reconnectErrorEventHandler:reconnectErrorEventHandler,
+                reconnectFailedEventHandler:reconnectFailedEventHandler,
+                newCallHandler:newCallHandler,
+                npanxxHandler:npanxxHandler,
+                dialBeginHandler:dialBeginHandler,
+                dialEndHandler:dialEndHandler,
+                newContactHandler:newContactHandler,
+                updateContactHandler:updateContactHandler,
+                dialBeginContactHandler:dialBeginContactHandler,
+                dialEndContactHandler:dialEndContactHandler,
+                newConnectedLineHandler:newConnectedLineHandler,
+                // keypressHandler:keypressHandler,
+                apikey:'11111111-1111-1111-111111111111',
+                username:"",
+                password:"",
+                room:"TrainingRuyland1"
+            };
+
+            var dispatcher = new FluentcloudEventsDispatcher(options);
+
+            dispatcher.run();
+
+        </script>
+    </head>
+
+    <body>
+        <p>Testing FluentCloud Events Dispatcher</p>
+    </body>
+
+</html>
