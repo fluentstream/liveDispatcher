@@ -98,3 +98,27 @@ var config = {
 //         }
 //     },
 // };
+
+// var config = {
+// 	"socket":{
+// 		"url":"https://nyc-node-2.fluentcloud.com",
+// 		"socket":443,
+// 		"secure":true,
+// 		"transport":"websocket"
+// 	},
+// 	"authentication":{
+// 		"url":"https://my.fluentcloud.com/api/v1/core/authenticate",
+// 		"httpType":"GET",
+// 		"maxAttempts":10
+// 	},
+// 	"ajax":{
+// 		"apiNamespace":{
+// 			"core":{
+// 				"url":"https://my.fluentcloud.com/api/v1/core/"
+// 			},
+// 			"call":{
+// 				"url":"https://my.fluentcloud.com/api/v1/call/"
+// 			}
+// 		}
+// 	}
+// };

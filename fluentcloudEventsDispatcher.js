@@ -21,14 +21,22 @@ FluentcloudEventsDispatcher.prototype = new LiveDispatcher();
 */
 FluentcloudEventsDispatcher.prototype.listen = function(){
 
-    if(_.isFunction(this.newCallHandler))
-        this.connection.on("newCall" , this.newCallHandler);
-    if(_.isFunction(this.npanxxHandler))
-        this.connection.on("npanxx" , this.npanxxHandler);
+    if(_.isFunction(this.newInboundCallHandler))
+        this.connection.on("newInboundCall" , this.newInboundCallHandler);
+    if(_.isFunction(this.newOutboundCallHandler))
+        this.connection.on("newOutboundCall" , this.newOutboundCallHandler);
+    if(_.isFunction(this.outboundExternalCallInfoHandler))
+        this.connection.on("outboundExternalCallInfo" , this.outboundExternalCallInfoHandler);
+    if(_.isFunction(this.inboundCallInfoHandler))
+        this.connection.on("inboundCallInfo" , this.inboundCallInfoHandler);
+    if(_.isFunction(this.runningApplicationHandler))
+        this.connection.on("runningApplication" , this.runningApplicationHandler);
     if(_.isFunction(this.dialBeginHandler))
         this.connection.on("dialBegin" , this.dialBeginHandler);
     if(_.isFunction(this.dialEndHandler))
         this.connection.on("dialEnd" , this.dialEndHandler);
+    if(_.isFunction(this.dialStateHandler))
+        this.connection.on("dialState" , this.dialStateHandler);
     if(_.isFunction(this.newContactHandler))
         this.connection.on("newContact" , this.newContactHandler);
     if(_.isFunction(this.updateContactHandler))
@@ -39,6 +47,20 @@ FluentcloudEventsDispatcher.prototype.listen = function(){
         this.connection.on("dialEndContact" , this.dialEndContactHandler);
     if(_.isFunction(this.newConnectedLineHandler))
         this.connection.on("newConnectedLine" , this.newConnectedLineHandler);
+    if(_.isFunction(this.bridgeCreateHandler))
+        this.connection.on("bridgeCreate" , this.bridgeCreateHandler);
+    if(_.isFunction(this.bridgeEnterHandler))
+        this.connection.on("bridgeEnter" , this.bridgeEnterHandler);
+    if(_.isFunction(this.bridgeLeaveHandler))
+        this.connection.on("bridgeLeave" , this.bridgeLeaveHandler);
+    if(_.isFunction(this.bridgeDestroyHandler))
+        this.connection.on("bridgeDestroy" , this.bridgeDestroyHandler);
+    if(_.isFunction(this.hangupHandler))
+        this.connection.on("hangup" , this.hangupHandler);
+    if(_.isFunction(this.newDeviceHandler))
+        this.connection.on("newDevice" , this.newDeviceHandler);
+    if(_.isFunction(this.updateDeviceHandler))
+        this.connection.on("updateDevice" , this.updateDeviceHandler);
     // if(_.isFunction(this.addLegHandler))
     //     this.connection.on("addLeg", this.addLegHandler);
     // if(_.isFunction(this.removeLegHandler))
@@ -62,7 +84,17 @@ FluentcloudEventsDispatcher.prototype.listen = function(){
         
 };
 
-// FluentcloudEventsDispatcher.prototype.getCalls = function(){
+FluentcloudEventsDispatcher.prototype.getCalls = function(options){
 
-//     this.connection.emit("getCalls" , this.tenant);
-// }
+    this.connection.emit("getCalls" , options);
+}
+
+FluentcloudEventsDispatcher.prototype.getQueues = function(options){
+
+    this.connection.emit("getQueues" , options);
+}
+
+FluentcloudEventsDispatcher.prototype.sendNagiosInboundCall = function(options){
+
+    this.connection.emit("sendNagiosInboundCall" , options);
+}
