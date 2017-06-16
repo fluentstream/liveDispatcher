@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <!-- // <script src="lib/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="config/config.js"></script>
+        <script src="liveDispatcher2.0.js"></script>
+        <script src="fluentcloudEventsDispatcher.js"></script>
+
+        <script>
+
+            /*These functions correspond to Socket Events, and thus belong to the parent*/
+            function connectEventHandler(event) {
+                console.log("Got socket connect event: ", event)
+            }
+            function reconnectEventHandler(event) {
+                console.log("Got socket reconnect event: ", event)
+            }
+            function reconnectingEventHandler(event) {
+                console.log("Got socket reconnecting event. Attempt number ", event)
+            }
+            function reconnectAttemptEventHandler(event) {
+                console.log("Got socket reconnect attempt event.  Attempt number ", event)
+            }
+            function reconnectErrorEventHandler(event) {
+                console.log("Got socket reconnect error event: ", event)
+            }
+            function reconnectFailedEventHandler(event) {
+                console.log("Got socket reconnect failed event")
+            }
+            function pongEventHandler(event) {
+                console.log("Got pong", event)
+            } 
+            function newInboundCallHandler(data, call){
+                console.log("Got new inbound call data: ", data, call);
+            }
+
+            /*These functions are for the Call Dispatcher*/
+            
+            var options = {
+                tenant:"Nagios",
+                eventScope:"tenant",
+                extension:"1001",
+                config:config,
+                connectEventHandler:connectEventHandler,
+                reconnectEventHandler:reconnectEventHandler,
+                reconnectingEventHandler:reconnectingEventHandler,
+                reconnectAttemptEventHandler:reconnectAttemptEventHandler,
+                reconnectErrorEventHandler:reconnectErrorEventHandler,
+                reconnectFailedEventHandler:reconnectFailedEventHandler,
+                newInboundCallHandler:newInboundCallHandler,
+                pongEventHandler:pongEventHandler,
+                apikey:'',
+                username:"",
+                password:"",
+                // room:"Snow/media/agents/1001"
+                rooms:"Yahweh/media/calls"
+            };
+
+            var dispatcher = new FluentCloudEventsDispatcher(options);
+
+            dispatcher.run();
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("playPingPong").onclick = function() {
+                    dispatcher.playPingPong();
+                };
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("getcalls").onclick = function() {
+                    dispatcher.getCalls({tenant:"Yahweh"});
+                };
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("getQueues").onclick = function() {
+                    dispatcher.getQueues();
+                };
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("sendNagiosInboundCall").onclick = function() {
+                    dispatcher.sendNagiosInboundCall();
+                };
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <p>Testing FluentCloud Events Dispatcher</p>
+    </body>
+
+    <button type="button" id="playPingPong">Play Pong Pong</button>
+    <button type="button" id="getcalls">Get Calls</button>
+    <button type="button" id="getQueues">Get Queues</button>
+    <button type="button" id="sendNagiosInboundCall">Send Nagios Call</button>
+
+</html>
