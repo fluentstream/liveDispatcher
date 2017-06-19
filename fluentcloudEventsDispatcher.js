@@ -5,6 +5,8 @@ class FluentCloudEventsDispatcher extends LiveDispatcher {
         super(options);
 
         this.namespace = '/fluentcloudevents';
+
+        this.initEvent = "getCalls";
     }
 
     listen() {

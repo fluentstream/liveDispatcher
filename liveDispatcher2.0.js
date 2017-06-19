@@ -96,8 +96,6 @@ class LiveDispatcher {
         // We can only subscribe when the connection is read. Let's add the listener func here
         this.connection.on('connectionReady', (event) => {
 
-            console.log('CONNECTION READY: ', event)
-            console.log('ROOOOMS: ', this.rooms)
             // If we have multiple rooms (array) subscribe to them
             if (this.rooms) {
 
@@ -157,7 +155,7 @@ class LiveDispatcher {
         });
 
         // Lets start listening for the server to pong us
-        this.connection.on('pong', (payload) => this.pong(payload));
+        this.connection.on('drop', (payload) => this.pong(payload));
     }
 
     close() {
@@ -166,12 +164,12 @@ class LiveDispatcher {
     }
 
     emit(event, payload) {
+
         this.connection.emit(event, payload);
     }
 
     pong(payload) {
 
-        console.log('PAYLOAD', payload)
         if (this.pingTimeoutHandle) {
             clearTimeout(this.pingTimeoutHandle);
         }
@@ -211,16 +209,13 @@ class LiveDispatcher {
 
             this.pingTimeoutHandle = setTimeout(() => this.pingTimeout(), this.pingTimeoutTime);
 
-            this.emit('ping', { date });
+            this.emit('drip', { date });
 
             this.playPingPong();
         }, this.pingInterval);
     }
 
     pingTimeout() {
-
-        // Ping has timed out
-        this.emit('pingTimout');
 
         if (this.pingTimeoutHandler && typeof this.pingTimeoutHandler === 'function') {
             this.pingTimeoutHandler();

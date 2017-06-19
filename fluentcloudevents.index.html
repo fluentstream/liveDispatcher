@@ -1,7 +1,7 @@
 <html>
     <head>
-        <!-- // <script src="lib/socket.io.js"></script> -->
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <!-- <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script> -->
         <script src="config/config.js"></script>
         <script src="liveDispatcher2.0.js"></script>
         <script src="fluentcloudEventsDispatcher.js"></script>
@@ -37,9 +37,9 @@
             /*These functions are for the Call Dispatcher*/
             
             var options = {
-                tenant:"Nagios",
+                tenant:"Yahweh",
                 eventScope:"tenant",
-                extension:"1001",
+                extension:"600",
                 config:config,
                 connectEventHandler:connectEventHandler,
                 reconnectEventHandler:reconnectEventHandler,
@@ -49,7 +49,7 @@
                 reconnectFailedEventHandler:reconnectFailedEventHandler,
                 newInboundCallHandler:newInboundCallHandler,
                 pongEventHandler:pongEventHandler,
-                apikey:'',
+                // apikey:'',
                 username:"",
                 password:"",
                 // room:"Snow/media/agents/1001"
