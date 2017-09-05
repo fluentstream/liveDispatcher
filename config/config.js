@@ -27,7 +27,7 @@ var config = {
 		"url":"https://live.fluentcloud.com",
 		"socket":443,
 		"secure":true,
-		"transport":"websocket"
+		"transport":["websocket"]
 	},
 	"authentication":{
 		"url":"https://my.fluentcloud.com/api/v1/core/authenticate",
